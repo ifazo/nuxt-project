@@ -1,5 +1,5 @@
 <template>
-    <div>
-        <AppFeature />
-    </div>
-  </template>
+  <div>
+    <AppFeature />
+  </div>
+</template>

@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  SELLER
+  BUYER
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  image    String?
+  role     UserRole @default(BUYER)
+
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+  orders    Order[]
+  reviews   Review[]
+  wishlist  Wishlist[]
+  Shop      Shop[]
+
+  @@map("users")
+}
+
+model Category {
+  id          String @id @default(uuid())
+  name        String
+  image       String
+  slug        String @unique
+  description String
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Shop {
+  id          String @id @default(uuid())
+  name        String
+  image       String
+  slug        String @unique
+  description String
+  userId      String @map("user")
+  user        User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  Product   Product[]
+
+  @@map("shops")
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  title        String
+  images       String[]
+  description  String
+  price        Float
+  stock        Int
+  categorySlug String   @map("category")
+  category     Category @relation(fields: [categorySlug], references: [slug])
+  shopId       String   @map("shop")
+  shop         Shop     @relation(fields: [shopId], references: [id])
+
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+  reviews   Review[]
+  wishlist  Wishlist[]
+
+  @@map("products")
+}
+
+model Review {
+  id        String  @id @default(uuid())
+  rating    Float
+  title     String
+  body      String
+  userId    String  @map("user")
+  user      User    @relation(fields: [userId], references: [id])
+  productId String  @map("product")
+  product   Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("reviews")
+}
+
+model Wishlist {
+  id        String  @id @default(uuid())
+  userId    String  @map("user")
+  user      User    @relation(fields: [userId], references: [id])
+  productId String  @map("product")
+  product   Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("wishlists")
+}
+
+model Order {
+  id       Int         @id @default(autoincrement())
+  total    Float
+  products Json[]
+  status   OrderStatus @default(PENDING)
+  userId   String      @map("user")
+  user     User        @relation(fields: [userId], references: [id])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  DELIVERED
+  CANCELLED
+  PROCESSING
+  PENDING
+  SHIPPED
+  RETURNED
+  REFUNDED
+  COMPLETED
+  FAILED
+}

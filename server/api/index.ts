@@ -1,1 +1,3 @@
-export default defineEventHandler(() => 'nuxt.js api server running successfully!!')
+export default defineEventHandler(
+  () => "nuxt.js api server running successfully!!",
+);
