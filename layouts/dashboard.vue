@@ -65,10 +65,10 @@
                 >
               </div>
               <nav class="mt-5 px-2 space-y-1">
-                <a
+                <NuxtLink
                   v-for="item in navigation"
                   :key="item.name"
-                  :href="item.href"
+                  :to="item.href"
                   :class="[
                     item.current
                       ? 'bg-gray-100 text-gray-900'
@@ -87,11 +87,11 @@
                     aria-hidden="true"
                   />
                   {{ item.name }}
-                </a>
+                </NuxtLink>
               </nav>
             </div>
             <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
-              <a href="#" class="flex-shrink-0 group block">
+              <NuxtLink href="/" class="flex-shrink-0 group block">
                 <div class="flex items-center">
                   <div>
                     <img
@@ -113,7 +113,7 @@
                     </p>
                   </div>
                 </div>
-              </a>
+              </NuxtLink>
             </div>
           </div>
         </TransitionChild>
@@ -138,10 +138,10 @@
             >
           </div>
           <nav class="mt-5 flex-1 px-2 bg-white space-y-1">
-            <a
+            <NuxtLink
               v-for="item in navigation"
               :key="item.name"
-              :href="item.href"
+              :to="item.href"
               :class="[
                 item.current
                   ? 'bg-gray-100 text-gray-900'
@@ -160,7 +160,7 @@
                 aria-hidden="true"
               />
               {{ item.name }}
-            </a>
+            </NuxtLink>
           </nav>
         </div>
         <div class="flex-shrink-0 flex border-t border-gray-200 p-4">
@@ -239,8 +239,13 @@ import {
 } from "@heroicons/vue/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+  {
+    name: "Blogs",
+    href: "/dashboard/blogs",
+    icon: UsersIcon,
+    current: false,
+  },
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Documents", href: "#", icon: InboxIcon, current: false },

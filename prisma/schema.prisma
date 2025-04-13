@@ -21,10 +21,10 @@ enum UserRole {
 
 model User {
   id       String   @id @default(uuid())
-  name     String
-  email    String   @unique
-  password String
+  name     String?
   image    String?
+  email    String   @unique
+  password String?
   role     UserRole @default(BUYER)
 
   createdAt DateTime?  @default(now())
@@ -33,8 +33,24 @@ model User {
   reviews   Review[]
   wishlist  Wishlist[]
   Shop      Shop[]
+  Blog      Blog[]
 
   @@map("users")
+}
+
+model Blog {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  content     String
+  image       String
+  userId      String @map("user")
+  user        User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("blogs")
 }
 
 model Category {

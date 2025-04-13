@@ -80,7 +80,8 @@
               >
                 <span class="absolute -inset-1.5" />
                 <span class="sr-only">Open user menu</span>
-                <img class="h-8 w-8 rounded-full" :src="user.imageUrl" alt="" >
+                <UserCircleIcon class="h-8 w-8 rounded-full" />
+                <!-- <img class="h-8 w-8 rounded-full" :src="user.imageUrl" alt="" /> -->
               </MenuButton>
             </div>
             <div v-else>
@@ -167,7 +168,8 @@
         <div class="flex items-center px-4">
           <div v-if="user">
             <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" >
+              <UserCircleIcon class="h-10 w-10 rounded-full" />
+              <!-- <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" /> -->
             </div>
             <div class="ml-3">
               <div class="text-base font-medium text-gray-800">
@@ -196,11 +198,10 @@
           <DisclosureButton
             v-for="item in userNavigation"
             :key="item.name"
-            as="a"
-            :href="item.href"
             class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-            >{{ item.name }}</DisclosureButton
           >
+            <NuxtLink :to="item.href">{{ item.name }}</NuxtLink>
+          </DisclosureButton>
           <DisclosureButton
             v-if="user"
             class="w-full text-start block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
@@ -226,7 +227,12 @@ import {
   MenuItems,
 } from "@headlessui/vue";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import {
+  Bars3Icon,
+  BellIcon,
+  XMarkIcon,
+  UserCircleIcon,
+} from "@heroicons/vue/24/outline";
 import type { User } from "firebase/auth";
 import { signOut } from "~/lib/firebase";
 import { useRouter } from "vue-router";
@@ -238,11 +244,11 @@ const navigation = [
   { name: "Blog", href: "/blogs", current: false },
 ];
 const userNavigation = [
-  { name: "Profile", href: "#" },
-  { name: "Dashboard", href: "#" },
+  { name: "Profile", href: "/profile" },
+  { name: "Dashboard", href: "/dashboard" },
 ];
 
-const toast = useToast()
+const toast = useToast();
 const router = useRouter();
 
 const user = computed(() => userStore.user) as Ref<{
@@ -273,23 +279,23 @@ onMounted(() => {
 });
 
 const handleSignOut = () => {
-    signOut()
-        .then(() => {
-            user.value = null;
-            userStore.removeUser();
-            toast.add({
-                title: 'Success',
-                description: 'User signed out successfully',
-                color: 'success',
-            })
-            router.push('/sign-in')
-        })
-        .catch((err) => {
-            toast.add({
-                title: 'Error',
-                description: err.message,
-                color: 'error',
-            })
-        })
-}
+  signOut()
+    .then(() => {
+      user.value = null;
+      userStore.removeUser();
+      toast.add({
+        title: "Success",
+        description: "User signed out successfully",
+        color: "success",
+      });
+      router.push("/sign-in");
+    })
+    .catch((err) => {
+      toast.add({
+        title: "Error",
+        description: err.message,
+        color: "error",
+      });
+    });
+};
 </script>

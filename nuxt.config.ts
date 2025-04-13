@@ -7,5 +7,9 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/eslint"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/eslint", "@nuxt/image"],
+  image: {
+    dir: "assets/images",
+    domains: ["https://tailwindui.com"],
+  },
 });
