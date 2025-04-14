@@ -30,7 +30,7 @@
           <img
             class="h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
+            alt="Logo"
           />
           <h2
             class="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900"
@@ -65,7 +65,7 @@
                     type="email"
                     autocomplete="email"
                     required
-                    class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
               </div>
@@ -84,7 +84,7 @@
                     type="password"
                     autocomplete="current-password"
                     required
-                    class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                 </div>
               </div>
@@ -233,7 +233,6 @@ const handleSignIn = () => {
         description: "User signed in successfully",
         color: "success",
       });
-      console.log("user", user);
       router.push("/");
     })
     .catch((err) => {
@@ -247,15 +246,31 @@ const handleSignIn = () => {
 
 const handleGoogleSignIn = () => {
   signInWithGoogle()
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
       userStore.setUser(user);
+
+      try {
+        await $fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            name: user.displayName || "Anonymous",
+            image: user.photoURL || "",
+            email: user.email,
+          },
+        });
+      } catch (error) {
+        console.error("Error creating user:", error);
+      }
+
       toast.add({
         title: "Success",
         description: "Google signed in successfully",
         color: "success",
       });
-      console.log("user", user);
       router.push("/");
     })
     .catch((err) => {
@@ -269,15 +284,31 @@ const handleGoogleSignIn = () => {
 
 const handleGitHubSignIn = () => {
   signInWithGithub()
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
       userStore.setUser(user);
+
+      try {
+        await $fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            name: user.displayName || "Anonymous",
+            image: user.photoURL || "",
+            email: user.email,
+          },
+        });
+      } catch (error) {
+        console.error("Error creating user:", error);
+      }
+
       toast.add({
         title: "Success",
         description: "GitHub signed in successfully",
         color: "success",
       });
-      console.log("user", user);
       router.push("/");
     })
     .catch((err) => {

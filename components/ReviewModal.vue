@@ -34,7 +34,10 @@
                   <div
                     class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-amber-100 sm:mx-0 sm:size-10"
                   >
-                    <StarIcon class="size-6 text-yellow-400" aria-hidden="true" />
+                    <StarIcon
+                      class="size-6 text-yellow-400"
+                      aria-hidden="true"
+                    />
                   </div>
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <DialogTitle
@@ -117,7 +120,7 @@
               >
                 <button
                   type="button"
-                  class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-700 sm:ml-3 sm:w-auto"
+                  class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto"
                   @click.prevent="submitReview"
                 >
                   Submit Review
@@ -150,7 +153,7 @@ import { StarIcon } from "@heroicons/vue/20/solid";
 import { useUserStore } from "@/stores/user";
 
 const props = defineProps({
-    blogId: {
+  blogId: {
     type: String,
     required: true,
   },
@@ -174,7 +177,7 @@ const closeModal = () => {
 };
 
 const submitReview = async () => {
-    const response = await fetch("/api/blogs/reviews", {
+  const response = await fetch("/api/blogs/reviews", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -194,13 +197,12 @@ const submitReview = async () => {
       description: "Failed to post review",
       color: "error",
     });
-  }
-  else {
+  } else {
     toast.add({
-        title: "Success",
-        description: "Review posted successfully",
-        color: "success",
-      });
+      title: "Success",
+      description: "Review posted successfully",
+      color: "success",
+    });
   }
   rating.value = 0;
   title.value = "";
