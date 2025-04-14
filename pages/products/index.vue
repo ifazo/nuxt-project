@@ -19,7 +19,7 @@
             :src="product.imageSrc"
             :alt="product.imageAlt"
             class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
-          >
+          />
           <div class="mt-4 flex justify-between">
             <div>
               <h3 class="text-sm text-gray-700">

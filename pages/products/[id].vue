@@ -33,22 +33,22 @@
           src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-01.jpg"
           alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
           class="rounded-lg bg-gray-100"
-        >
+        />
         <img
           src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-02.jpg"
           alt="Top down view of walnut card tray with embedded magnets and card groove."
           class="rounded-lg bg-gray-100"
-        >
+        />
         <img
           src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-03.jpg"
           alt="Side of walnut card tray with card groove and recessed card area."
           class="rounded-lg bg-gray-100"
-        >
+        />
         <img
           src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-03-detail-04.jpg"
           alt="Walnut card tray filled with cards and card angled in dedicated groove."
           class="rounded-lg bg-gray-100"
-        >
+        />
       </div>
     </div>
   </div>

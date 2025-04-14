@@ -29,7 +29,7 @@
                   name="title"
                   class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                   placeholder="Title..."
-                >
+                />
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@
                     :src="previewImage"
                     alt="Image Preview"
                     class="mx-auto h-24 w-24 object-cover rounded-md"
-                  >
+                  />
                 </div>
                 <div v-else>
                   <PhotoIcon
@@ -101,7 +101,7 @@
                       type="file"
                       class="sr-only"
                       @change="handleFileChange"
-                    >
+                    />
                   </label>
                   <p class="pl-1">or drag and drop</p>
                 </div>

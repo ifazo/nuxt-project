@@ -27,13 +27,14 @@ model User {
   password String?
   role     UserRole @default(BUYER)
 
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  orders    Order[]
-  reviews   Review[]
-  wishlist  Wishlist[]
-  Shop      Shop[]
-  Blog      Blog[]
+  createdAt     DateTime?       @default(now())
+  updatedAt     DateTime?       @updatedAt
+  orders        Order[]
+  wishlist      Wishlist[]
+  Shop          Shop[]
+  Blog          Blog[]
+  BlogReview    BlogReview[]
+  ProductReview ProductReview[]
 
   @@map("users")
 }
@@ -47,10 +48,27 @@ model Blog {
   userId      String @map("user")
   user        User   @relation(fields: [userId], references: [id])
 
+  createdAt  DateTime?    @default(now())
+  updatedAt  DateTime?    @updatedAt
+  BlogReview BlogReview[]
+
+  @@map("blogs")
+}
+
+model BlogReview {
+  id          String @id @default(uuid())
+  rating      Float
+  title       String
+  description String
+  userEmail   String @map("user")
+  user        User   @relation(fields: [userEmail], references: [email])
+  blogId      String @map("blog")
+  blog        Blog   @relation(fields: [blogId], references: [id])
+
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@map("blogs")
+  @@map("blog_reviews")
 }
 
 model Category {
@@ -95,28 +113,28 @@ model Product {
   shopId       String   @map("shop")
   shop         Shop     @relation(fields: [shopId], references: [id])
 
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  reviews   Review[]
-  wishlist  Wishlist[]
+  createdAt     DateTime?       @default(now())
+  updatedAt     DateTime?       @updatedAt
+  wishlist      Wishlist[]
+  ProductReview ProductReview[]
 
   @@map("products")
 }
 
-model Review {
+model ProductReview {
   id        String  @id @default(uuid())
   rating    Float
   title     String
   body      String
-  userId    String  @map("user")
-  user      User    @relation(fields: [userId], references: [id])
+  userEmail String  @map("user")
+  user      User    @relation(fields: [userEmail], references: [email])
   productId String  @map("product")
   product   Product @relation(fields: [productId], references: [id])
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@map("reviews")
+  @@map("product_reviews")
 }
 
 model Wishlist {
@@ -133,7 +151,7 @@ model Wishlist {
 }
 
 model Order {
-  id       Int         @id @default(autoincrement())
+  id        String  @id @default(uuid())
   total    Float
   products Json[]
   status   OrderStatus @default(PENDING)

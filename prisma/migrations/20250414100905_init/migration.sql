@@ -33,6 +33,20 @@ CREATE TABLE "blogs" (
 );
 
 -- CreateTable
+CREATE TABLE "blog_reviews" (
+    "id" TEXT NOT NULL,
+    "rating" DOUBLE PRECISION NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "user" TEXT NOT NULL,
+    "blog" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "blog_reviews_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -76,7 +90,7 @@ CREATE TABLE "products" (
 );
 
 -- CreateTable
-CREATE TABLE "reviews" (
+CREATE TABLE "product_reviews" (
     "id" TEXT NOT NULL,
     "rating" DOUBLE PRECISION NOT NULL,
     "title" TEXT NOT NULL,
@@ -86,7 +100,7 @@ CREATE TABLE "reviews" (
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
-    CONSTRAINT "reviews_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "product_reviews_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -126,6 +140,12 @@ CREATE UNIQUE INDEX "shops_slug_key" ON "shops"("slug");
 ALTER TABLE "blogs" ADD CONSTRAINT "blogs_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "blog_reviews" ADD CONSTRAINT "blog_reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "blog_reviews" ADD CONSTRAINT "blog_reviews_blog_fkey" FOREIGN KEY ("blog") REFERENCES "blogs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "shops" ADD CONSTRAINT "shops_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -135,10 +155,10 @@ ALTER TABLE "products" ADD CONSTRAINT "products_category_fkey" FOREIGN KEY ("cat
 ALTER TABLE "products" ADD CONSTRAINT "products_shop_fkey" FOREIGN KEY ("shop") REFERENCES "shops"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "wishlists" ADD CONSTRAINT "wishlists_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
