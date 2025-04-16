@@ -2,15 +2,12 @@
   <div class="bg-white py-4 sm:py-8">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        <h2 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
           Blogs
         </h2>
-        <p class="mt-2 text-lg leading-8 text-gray-600">
-          All blogs are listed here
-        </p>
       </div>
       <div
-        class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+        class="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
       >
         <article
           v-for="post in posts"
@@ -29,9 +26,11 @@
           </div>
           <div class="max-w-xl">
             <div class="mt-8 flex items-center gap-x-4 text-xs">
-              <time :datetime="post.datetime" class="text-gray-500">{{
-                post.date
-              }}</time>
+              <time
+                :datetime="post.datetime"
+                class="font-medium text-gray-500"
+                >{{ post.date }}</time
+              >
               <NuxtLink
                 :to="post.category.href"
                 class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
@@ -47,7 +46,9 @@
                   {{ post.title }}
                 </NuxtLink>
               </h3>
-              <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+              <p
+                class="mt-5 line-clamp-3 text-sm font-medium leading-6 text-gray-600"
+              >
                 {{ post.description }}
               </p>
             </div>
@@ -64,7 +65,7 @@
                     {{ post.author.name }}
                   </NuxtLink>
                 </p>
-                <p class="text-gray-600">{{ post.author.role }}</p>
+                <p class="font-medium text-gray-600">{{ post.author.role }}</p>
               </div>
             </div>
           </div>
