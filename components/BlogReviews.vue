@@ -9,13 +9,13 @@
           label="Write a review"
           color="neutral"
           variant="outline"
-          class="w-md text-center flex items-center justify-center"
+          class="flex w-md items-center justify-center text-center"
           @click="open = true"
-        ></UButton>
+        />
       </div>
       <ReviewModal v-model:open="open" :blog-id="blogId" />
       <div
-        class="mt-6 space-y-10 divide-y divide-gray-200 border-b border-t border-gray-200 pb-10"
+        class="mt-6 space-y-10 divide-y divide-gray-200 border-t border-b border-gray-200 pb-10"
       >
         <div
           v-for="review in reviews"
@@ -62,7 +62,7 @@
             <p class="font-medium text-gray-900">{{ review.author }}</p>
             <time
               :datetime="review.datetime"
-              class="ml-4 border-l border-gray-200 pl-4 text-gray-500 lg:ml-0 lg:mt-2 lg:border-0 lg:pl-0"
+              class="ml-4 border-l border-gray-200 pl-4 text-gray-500 lg:mt-2 lg:ml-0 lg:border-0 lg:pl-0"
               >{{ review.date }}</time
             >
           </div>

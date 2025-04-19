@@ -31,9 +31,9 @@
             class="h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Logo"
-          />
+          >
           <h2
-            class="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900"
+            class="mt-8 text-2xl leading-9 font-bold tracking-tight text-gray-900"
           >
             Sign in to your account
           </h2>
@@ -54,7 +54,7 @@
               <div>
                 <label
                   for="email"
-                  class="block text-sm font-medium leading-6 text-gray-900"
+                  class="block text-sm leading-6 font-medium text-gray-900"
                   >Email address</label
                 >
                 <div class="mt-2">
@@ -66,14 +66,14 @@
                     autocomplete="email"
                     required
                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
+                  >
                 </div>
               </div>
 
               <div>
                 <label
                   for="password"
-                  class="block text-sm font-medium leading-6 text-gray-900"
+                  class="block text-sm leading-6 font-medium text-gray-900"
                   >Password</label
                 >
                 <div class="mt-2">
@@ -85,7 +85,7 @@
                     autocomplete="current-password"
                     required
                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
+                  >
                 </div>
               </div>
 
@@ -96,7 +96,7 @@
                     name="remember-me"
                     type="checkbox"
                     class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
+                  >
                   <label
                     for="remember-me"
                     class="ml-3 block text-sm leading-6 text-gray-700"
@@ -116,7 +116,7 @@
               <div>
                 <button
                   type="submit"
-                  class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Sign in
                 </button>
@@ -133,7 +133,7 @@
                 <div class="w-full border-t border-gray-200" />
               </div>
               <div
-                class="relative flex justify-center text-sm font-medium leading-6"
+                class="relative flex justify-center text-sm leading-6 font-medium"
               >
                 <span class="bg-white px-6 text-gray-900"
                   >Or continue with</span
@@ -144,7 +144,7 @@
             <div class="mt-6 grid grid-cols-2 gap-4">
               <button
                 type="button"
-                class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent"
                 @click="handleGoogleSignIn()"
               >
                 <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
@@ -165,12 +165,12 @@
                     fill="#34A853"
                   />
                 </svg>
-                <span class="text-sm font-semibold leading-6">Google</span>
+                <span class="text-sm leading-6 font-semibold">Google</span>
               </button>
 
               <button
                 type="button"
-                class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent"
                 @click="handleGitHubSignIn()"
               >
                 <svg
@@ -185,7 +185,7 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                <span class="text-sm font-semibold leading-6">GitHub</span>
+                <span class="text-sm leading-6 font-semibold">GitHub</span>
               </button>
             </div>
           </div>
@@ -197,7 +197,7 @@
         class="absolute inset-0 h-full w-full object-cover"
         src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
         alt=""
-      />
+      >
     </div>
   </div>
 </template>

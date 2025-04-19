@@ -15,10 +15,11 @@
 -->
 <template>
   <div class="bg-white">
-    <div class="mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div class="mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <ProductBreadcrumb />
       <!-- Product -->
       <div
-        class="lg:grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16"
+        class="py-8 lg:grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16"
       >
         <!-- Product image -->
         <div class="lg:col-span-4 lg:row-end-1">
@@ -29,7 +30,7 @@
               :src="product.imageSrc"
               :alt="product.imageAlt"
               class="object-cover object-center"
-            />
+            >
           </div>
         </div>
 
@@ -81,13 +82,13 @@
           <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
             <button
               type="button"
-              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
             >
               Pay {{ product.price }}
             </button>
             <button
               type="button"
-              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
             >
               Preview
             </button>
@@ -187,37 +188,37 @@
           <TabGroup as="div">
             <div class="border-b border-gray-200">
               <TabList class="-mb-px flex space-x-8">
-                <Tab as="template" v-slot="{ selected }">
+                <Tab v-slot="{ selected }" as="template">
                   <button
                     :class="[
                       selected
                         ? 'border-indigo-600 text-indigo-600'
                         : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                      'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
+                      'border-b-2 py-6 text-sm font-medium whitespace-nowrap',
                     ]"
                   >
                     Customer Reviews
                   </button>
                 </Tab>
-                <Tab as="template" v-slot="{ selected }">
+                <Tab v-slot="{ selected }" as="template">
                   <button
                     :class="[
                       selected
                         ? 'border-indigo-600 text-indigo-600'
                         : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                      'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
+                      'border-b-2 py-6 text-sm font-medium whitespace-nowrap',
                     ]"
                   >
                     FAQ
                   </button>
                 </Tab>
-                <Tab as="template" v-slot="{ selected }">
+                <Tab v-slot="{ selected }" as="template">
                   <button
                     :class="[
                       selected
                         ? 'border-indigo-600 text-indigo-600'
                         : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                      'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
+                      'border-b-2 py-6 text-sm font-medium whitespace-nowrap',
                     ]"
                   >
                     License
@@ -239,7 +240,7 @@
                       :src="review.avatarSrc"
                       alt=""
                       class="h-10 w-10 rounded-full bg-gray-100"
-                    />
+                    >
                   </div>
                   <div
                     :class="[
@@ -311,6 +312,7 @@
 <script setup>
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
+import ProductBreadcrumb from "~/components/ProductBreadcrumb.vue";
 
 const product = {
   name: "Application UI Icon Pack",

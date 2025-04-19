@@ -19,10 +19,10 @@
             src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1344&h=1104&q=80"
             alt=""
             class="mt-8 aspect-[6/5] w-full rounded-2xl bg-gray-50 object-cover lg:aspect-auto lg:h-[34.5rem]"
-          />
+          >
         </div>
         <div class="w-full lg:max-w-md lg:flex-auto">
-          <h3 class="py-8 text-2xl font-bold leading-7 text-indigo-600">
+          <h3 class="py-8 text-2xl leading-7 font-bold text-indigo-600">
             Related products
           </h3>
           <ul class="-my-4 divide-y divide-gray-100">
@@ -33,7 +33,7 @@
                   :src="product.image"
                   alt="Product Image"
                   class="h-24 w-24 rounded-md object-cover"
-                />
+                >
                 <dl class="relative flex flex-wrap gap-x-3">
                   <dt class="sr-only">Role</dt>
                   <dd
@@ -52,7 +52,7 @@
                   </dd>
                   <dt class="sr-only">Salary</dt>
                   <dd
-                    class="mt-2 text-base font-semibold leading-7 text-gray-900"
+                    class="mt-2 text-base leading-7 font-semibold text-gray-900"
                   >
                     {{ product.salary }}
                   </dd>
@@ -76,7 +76,7 @@
           <div class="my-4 flex border-t border-gray-100 pt-4">
             <NuxtLink
               :to="'/products'"
-              class="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              class="text-sm leading-6 font-semibold text-indigo-600 hover:text-indigo-500"
               >View all products <span aria-hidden="true">&rarr;</span>
             </NuxtLink>
           </div>

@@ -7,9 +7,21 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/eslint", "@nuxt/image"],
+  modules: [
+    "@nuxt/ui",
+    "@pinia/nuxt",
+    "@nuxt/eslint",
+    "@nuxt/image",
+    "@nuxtjs/google-fonts",
+  ],
   image: {
     dir: "assets/images",
     domains: ["https://tailwindui.com"],
   },
+  googleFonts: {
+    families: {
+      Roboto: [400, 500, 700],
+    },
+    display: "swap",
+  }
 });

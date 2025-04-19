@@ -1,6 +1,6 @@
 <template>
   <form>
-    <div class="space-y-12 mt-8">
+    <div class="mt-8 space-y-12">
       <div class="border-b border-gray-900/10 pb-12">
         <h2 class="text-base/7 font-semibold text-gray-900">Blog</h2>
         <p class="mt-1 text-sm/6 text-gray-600">
@@ -29,7 +29,7 @@
                   name="title"
                   class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                   placeholder="Title..."
-                />
+                >
               </div>
             </div>
           </div>
@@ -80,8 +80,8 @@
                   <img
                     :src="previewImage"
                     alt="Image Preview"
-                    class="mx-auto h-24 w-24 object-cover rounded-md"
-                  />
+                    class="mx-auto h-24 w-24 rounded-md object-cover"
+                  >
                 </div>
                 <div v-else>
                   <PhotoIcon
@@ -101,7 +101,7 @@
                       type="file"
                       class="sr-only"
                       @change="handleFileChange"
-                    />
+                    >
                   </label>
                   <p class="pl-1">or drag and drop</p>
                 </div>

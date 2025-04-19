@@ -57,7 +57,7 @@
                 <div class="mt-6">
                   <!-- Star Rating -->
                   <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                    <label class="mb-2 block text-sm font-medium text-gray-700"
                       >Rating</label
                     >
                     <div class="flex space-x-2">
@@ -65,14 +65,14 @@
                         v-for="i in 5"
                         :key="i"
                         type="button"
-                        @click="rating = i"
                         class="focus:outline-none"
+                        @click="rating = i"
                       >
                         <StarIcon
                           :class="[
                             'size-8',
                             i <= rating
-                              ? 'text-yellow-400 fill-yellow-400'
+                              ? 'fill-yellow-400 text-yellow-400'
                               : 'text-gray-200',
                           ]"
                         />
@@ -84,24 +84,24 @@
                   <div class="mb-4">
                     <label
                       for="review-title"
-                      class="block text-sm font-medium text-gray-700 mb-2"
+                      class="mb-2 block text-sm font-medium text-gray-700"
                       >Title</label
                     >
                     <input
-                      type="text"
                       id="review-title"
                       v-model="title"
+                      type="text"
                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       placeholder="Summarize your experience"
                       required
-                    />
+                    >
                   </div>
 
                   <!-- Description Input -->
                   <div class="mb-4">
                     <label
                       for="review-description"
-                      class="block text-sm font-medium text-gray-700 mb-2"
+                      class="mb-2 block text-sm font-medium text-gray-700"
                       >Description</label
                     >
                     <textarea
@@ -111,7 +111,7 @@
                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                       placeholder="Tell us more about your experience"
                       required
-                    ></textarea>
+                    />
                   </div>
                 </div>
               </div>

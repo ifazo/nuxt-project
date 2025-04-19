@@ -11,7 +11,7 @@
         <p class="mt-2 text-base leading-7 text-gray-600">
           <NuxtLink
             href="/dashboard/blogs/add"
-            class="text-sm font-semibold leading-6 text-gray-900"
+            class="text-sm leading-6 font-semibold text-gray-900"
           >
             Add a new blog <span aria-hidden="true">→</span>
           </NuxtLink>
@@ -23,18 +23,18 @@
         <article
           v-for="post in posts"
           :key="post.id"
-          class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80"
+          class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pt-80 pb-8 sm:pt-48 lg:pt-80"
         >
           <img
             :src="post.imageUrl"
             alt=""
             class="absolute inset-0 -z-10 h-full w-full object-cover"
-          />
+          >
           <div
             class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"
           />
           <div
-            class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"
+            class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-gray-900/10 ring-inset"
           />
 
           <div
@@ -53,12 +53,12 @@
                   :src="post.author.imageUrl"
                   alt=""
                   class="h-6 w-6 flex-none rounded-full bg-white/10"
-                />
+                >
                 {{ post.author.name }}
               </div>
             </div>
           </div>
-          <h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+          <h3 class="mt-3 text-lg leading-6 font-semibold text-white">
             <a :href="post.href">
               <span class="absolute inset-0" />
               {{ post.title }}
