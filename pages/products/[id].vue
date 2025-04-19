@@ -27,10 +27,10 @@
             class="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg bg-gray-100"
           >
             <img
-              :src="product.imageSrc"
-              :alt="product.imageAlt"
+              :src="product.images[0]"
+              :alt="product.title"
               class="object-cover object-center"
-            >
+            />
           </div>
         </div>
 
@@ -43,7 +43,7 @@
               <h1
                 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
               >
-                {{ product.name }}
+                {{ product.title }}
               </h1>
 
               <h2 id="information-heading" class="sr-only">
@@ -82,15 +82,17 @@
           <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
             <button
               type="button"
+              @click="handlePayment(product, displayName, email)"
               class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
             >
-              Pay {{ product.price }}
+              Buy ${{ product.price }}
             </button>
             <button
               type="button"
+              @click="addToCartHandler(product)"
               class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
             >
-              Preview
+              Add to cart
             </button>
           </div>
 
@@ -240,7 +242,7 @@
                       :src="review.avatarSrc"
                       alt=""
                       class="h-10 w-10 rounded-full bg-gray-100"
-                    >
+                    />
                   </div>
                   <div
                     :class="[
@@ -313,11 +315,81 @@
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb.vue";
+import { useCartStore } from "@/stores/cart";
+import { useUserStore } from "@/stores/user";
+import { loadStripe } from "@stripe/stripe-js";
+
+// const product = ref(null)
+// const quantity = ref(1)
+
+const toast = useToast();
+
+const cartStore = useCartStore();
+const userStore = useUserStore();
+
+const config = useRuntimeConfig();
+const stripePromise = loadStripe(config.public.stripePublishableKey);
+
+const user = computed(() => userStore.user);
+const displayName = computed(() => user.value?.displayName || "");
+const email = computed(() => user.value?.email || "");
+
+const handlePayment = async (product, displayName, email) => {
+  const stripe = await stripePromise;
+  if (!stripe) {
+    return;
+  }
+  if (!displayName || !email) {
+    toast.add({
+      title: "Authentication Required",
+      description: "Please sign in to proceed with payment.",
+      color: "warning",
+    });
+    return navigateTo("/sign-in");
+  }
+  try {
+    const response = await $fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: { products: [product], name: displayName, email },
+    });
+
+    console.log("Response from server:", response);
+
+    if (!response || !response.id) {
+      throw new Error("Invalid response from server");
+    }
+
+    const result = await stripe.redirectToCheckout({ sessionId: response.id });
+
+    if (result.error) {
+      console.error("Stripe redirect error:", result.error.message);
+    }
+  } catch (error) {
+    console.error("Error during payment:", error);
+    toast.add({
+      title: "Payment Error",
+      description: "An error occurred while processing your payment.",
+      color: "error",
+    });
+  }
+};
+
+const addToCartHandler = (product) => {
+  cartStore.addToCart(product);
+  toast.add({
+    title: "Success",
+    description: "Product added to cart",
+    color: "success",
+  });
+};
 
 const product = {
-  name: "Application UI Icon Pack",
+  title: "Application UI Icon Pack",
   version: { name: "1.0", date: "June 5, 2021", datetime: "2021-06-05" },
-  price: "$220",
+  price: "220",
   description:
     "The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.",
   highlights: [
@@ -325,10 +397,9 @@ const product = {
     "Compatible with Figma, Sketch, and Adobe XD",
     "Drawn on 24 x 24 pixel grid",
   ],
-  imageSrc: "https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg",
-  imageAlt:
-    "Sample of 30 icons with friendly and fun details in outline, filled, and brand color styles.",
+  images: ["https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg"],
 };
+
 const reviews = {
   average: 4,
   featured: [

@@ -5,11 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import CategoryFilters from '~/components/CategoryFilters.vue';
-
-
+import CategoryFilters from "~/components/CategoryFilters.vue";
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

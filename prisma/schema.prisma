@@ -139,8 +139,8 @@ model ProductReview {
 
 model Wishlist {
   id        String  @id @default(uuid())
-  userId    String  @map("user")
-  user      User    @relation(fields: [userId], references: [id])
+  userEmail String  @map("user")
+  user      User    @relation(fields: [userEmail], references: [email])
   productId String  @map("product")
   product   Product @relation(fields: [productId], references: [id])
 
@@ -152,11 +152,11 @@ model Wishlist {
 
 model Order {
   id        String  @id @default(uuid())
-  total    Float
   products Json[]
+  total    Float
   status   OrderStatus @default(PENDING)
-  userId   String      @map("user")
-  user     User        @relation(fields: [userId], references: [id])
+  userEmail String  @map("user")
+  user      User    @relation(fields: [userEmail], references: [email])
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt

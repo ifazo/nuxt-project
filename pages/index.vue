@@ -1,39 +1,41 @@
 <template>
   <div>
-    <div class="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
+    <div
+      class="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8"
+    >
       <aside class="sticky top-8 hidden w-45 shrink-0 lg:block">
         <!-- Left column area -->
         <div class="hidden lg:block">
-            <h2 class="text-lg font-medium text-gray-900">Recent Blogs</h2>
-            <ul role="list" class="mt-6 space-y-4">
-              <li
-                v-for="(blog, index) in blogs"
-                :key="index"
-                class="flex items-center space-x-3"
-              >
-                <div class="min-w-0 flex-1">
-                  <p class="text-sm font-medium text-gray-900">
-                    {{ blog.title }}
-                  </p>
-                  <p class="text-sm text-gray-500">{{ blog.description }}</p>
-                  <p class="text-xs text-gray-400">{{ blog.date }}</p>
-                </div>
-              </li>
-            </ul>
-            <div class="mt-6">
-              <a
-                href="#"
-                class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                View all blogs
-              </a>
-            </div>
+          <h2 class="text-lg font-medium text-gray-900">Recent Blogs</h2>
+          <ul role="list" class="mt-6 space-y-4">
+            <li
+              v-for="(blog, index) in blogs"
+              :key="index"
+              class="flex items-center space-x-3"
+            >
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-medium text-gray-900">
+                  {{ blog.title }}
+                </p>
+                <p class="text-sm text-gray-500">{{ blog.description }}</p>
+                <p class="text-xs text-gray-400">{{ blog.date }}</p>
+              </div>
+            </li>
+          </ul>
+          <div class="mt-6">
+            <a
+              href="#"
+              class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              View all blogs
+            </a>
           </div>
+        </div>
       </aside>
 
       <main class="flex-1">
         <!-- Main area -->
-         <AppFeature />
+        <AppFeature />
       </main>
 
       <aside class="sticky top-8 hidden w-60 shrink-0 xl:block">
@@ -50,7 +52,7 @@
                 :src="product.image"
                 alt=""
                 class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200"
-              >
+              />
               <div class="min-w-0 flex-1">
                 <p class="text-sm font-medium text-gray-900">
                   {{ product.name }}
@@ -135,6 +137,6 @@ const products = [
     image: "https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg",
     description: "This is the description for product 5.",
     price: "$50.00",
-  }
+  },
 ];
 </script>

@@ -1,5 +1,8 @@
 <template>
-  <footer class="bg-white border-t border-gray-900/10" aria-labelledby="footer-heading">
+  <footer
+    class="border-t border-gray-900/10 bg-white"
+    aria-labelledby="footer-heading"
+  >
     <h2 id="footer-heading" class="sr-only">Footer</h2>
     <div class="mx-auto max-w-7xl px-6 pt-8 pb-8 sm:pt-12 lg:px-8 lg:pt-16">
       <div class="xl:grid xl:grid-cols-3 xl:gap-8">
@@ -8,7 +11,7 @@
             class="h-7"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Company name"
-          >
+          />
           <p class="text-sm leading-6 text-gray-600">
             Making the world a better place through constructing elegant
             hierarchies.

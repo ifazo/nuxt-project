@@ -18,10 +18,18 @@ export default defineNuxtConfig({
     dir: "assets/images",
     domains: ["https://tailwindui.com"],
   },
+  runtimeConfig: {
+    // Private variables (server-side only)
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    // Public variables (client-side and server-side)
+    public: {
+      stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    },
+  },
   googleFonts: {
     families: {
       Roboto: [400, 500, 700],
     },
     display: "swap",
-  }
+  },
 });
