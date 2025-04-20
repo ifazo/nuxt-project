@@ -27,76 +27,41 @@ model User {
   password String?
   role     UserRole @default(BUYER)
 
-  createdAt     DateTime?       @default(now())
-  updatedAt     DateTime?       @updatedAt
-  orders        Order[]
-  wishlist      Wishlist[]
-  Shop          Shop[]
-  Blog          Blog[]
-  BlogReview    BlogReview[]
-  ProductReview ProductReview[]
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+  order    Order[]
+  wishlist  Wishlist[]
+  blog      Blog[]
+  shop      Shop?
+  review    Review[]
 
   @@map("users")
 }
 
-model Blog {
-  id          String @id @default(uuid())
-  title       String
-  description String
-  content     String
-  image       String
-  tag         String @unique
-  userId      String @map("user")
-  user        User   @relation(fields: [userId], references: [id])
-
-  createdAt  DateTime?    @default(now())
-  updatedAt  DateTime?    @updatedAt
-  BlogReview BlogReview[]
-
-  @@map("blogs")
-}
-
-model BlogReview {
-  id          String @id @default(uuid())
-  rating      Int
-  title       String
-  description String
-  userEmail   String @map("user")
-  user        User   @relation(fields: [userEmail], references: [email])
-  blogId      String @map("blog")
-  blog        Blog   @relation(fields: [blogId], references: [id])
-
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
-  @@map("blog_reviews")
-}
-
 model Category {
-  id          String @id @default(uuid())
-  name        String @unique
-  image       String
-  description String
+  id      String @id @default(uuid())
+  name    String @unique
+  details String
+  icon    String
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-  products  Product[]
+  product  Product[]
 
   @@map("categories")
 }
 
 model Shop {
-  id          String @id @default(uuid())
-  name        String @unique
-  image       String
-  description String
-  address     String
-  userId      String @map("user")
-  user        User   @relation(fields: [userId], references: [id])
+  id        String @id @default(uuid())
+  name      String @unique
+  details   String
+  logo      String
+  userEmail String @unique @map("user")
+  user      User   @relation(fields: [userEmail], references: [email])
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-  Product   Product[]
+  product   Product[]
 
   @@map("shops")
 }
@@ -115,15 +80,15 @@ model Product {
   shopName     String   @map("shop")
   shop         Shop     @relation(fields: [shopName], references: [id])
 
-  createdAt     DateTime?       @default(now())
-  updatedAt     DateTime?       @updatedAt
-  wishlist      Wishlist[]
-  ProductReview ProductReview[]
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+  wishlist  Wishlist[]
+  review    Review[]
 
   @@map("products")
 }
 
-model ProductReview {
+model Review {
   id        String  @id @default(uuid())
   rating    Int
   comment   String
@@ -135,7 +100,23 @@ model ProductReview {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@map("product_reviews")
+  @@map("reviews")
+}
+
+model Blog {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  content     String
+  image       String
+  tag         String @unique
+  userEmail   String @map("user")
+  user        User   @relation(fields: [userEmail], references: [email])
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("blogs")
 }
 
 model Wishlist {

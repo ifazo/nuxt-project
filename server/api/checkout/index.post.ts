@@ -3,7 +3,7 @@ import prisma from "~/prisma";
 import type { CartItem } from "~/stores/cart";
 
 const config = useRuntimeConfig();
-const stripe = new Stripe(config.stripeSecretKey);
+const stripe = new Stripe(config.STRIPE_SECRET_KEY);
 
 export default defineEventHandler(async (event) => {
   try {

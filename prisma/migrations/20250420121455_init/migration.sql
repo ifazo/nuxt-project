@@ -19,40 +19,11 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "blogs" (
-    "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
-    "tag" TEXT NOT NULL,
-    "user" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-
-    CONSTRAINT "blogs_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "blog_reviews" (
-    "id" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
-    "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "user" TEXT NOT NULL,
-    "blog" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-
-    CONSTRAINT "blog_reviews_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "icon" TEXT NOT NULL,
+    "details" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
@@ -63,9 +34,8 @@ CREATE TABLE "categories" (
 CREATE TABLE "shops" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
+    "logo" TEXT NOT NULL,
+    "details" TEXT NOT NULL,
     "user" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -92,7 +62,7 @@ CREATE TABLE "products" (
 );
 
 -- CreateTable
-CREATE TABLE "product_reviews" (
+CREATE TABLE "reviews" (
     "id" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
     "comment" TEXT NOT NULL,
@@ -101,7 +71,22 @@ CREATE TABLE "product_reviews" (
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
-    CONSTRAINT "product_reviews_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "reviews_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "blogs" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "tag" TEXT NOT NULL,
+    "user" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "blogs_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -134,25 +119,19 @@ CREATE TABLE "orders" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "blogs_tag_key" ON "blogs"("tag");
-
--- CreateIndex
 CREATE UNIQUE INDEX "categories_name_key" ON "categories"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "shops_name_key" ON "shops"("name");
 
--- AddForeignKey
-ALTER TABLE "blogs" ADD CONSTRAINT "blogs_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "shops_user_key" ON "shops"("user");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "blogs_tag_key" ON "blogs"("tag");
 
 -- AddForeignKey
-ALTER TABLE "blog_reviews" ADD CONSTRAINT "blog_reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "blog_reviews" ADD CONSTRAINT "blog_reviews_blog_fkey" FOREIGN KEY ("blog") REFERENCES "blogs"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "shops" ADD CONSTRAINT "shops_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "shops" ADD CONSTRAINT "shops_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_category_fkey" FOREIGN KEY ("category") REFERENCES "categories"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -161,10 +140,13 @@ ALTER TABLE "products" ADD CONSTRAINT "products_category_fkey" FOREIGN KEY ("cat
 ALTER TABLE "products" ADD CONSTRAINT "products_shop_fkey" FOREIGN KEY ("shop") REFERENCES "shops"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "reviews" ADD CONSTRAINT "reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "reviews" ADD CONSTRAINT "reviews_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "blogs" ADD CONSTRAINT "blogs_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "wishlists" ADD CONSTRAINT "wishlists_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -13,6 +13,8 @@ import {
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+// const stripePromise = loadStripe(config.public.STRIPE_PUBLISHABLE_KEY);
+
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -24,6 +26,15 @@ const firebaseConfig = {
   appId: "1:175443418048:web:4a625d64cdfc8f034a8625",
   measurementId: "G-3SCPD7TJ0C",
 };
+// const firebaseConfig = {
+//   apiKey: config.public.FIREBASE_API_KEY,
+//   authDomain: config.public.FIREBASE_AUTH_DOMAIN,
+//   projectId: config.public.FIREBASE_PROJECT_ID,
+//   storageBucket: config.public.FIREBASE_STORAGE_BUCKET,
+//   messagingSenderId: config.public.FIREBASE_MESSAGING_SENDER_ID,
+//   appId: config.public.FIREBASE_APP_ID,
+//   measurementId: config.public.FIREBASE_MEASUREMENT_ID,
+// };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

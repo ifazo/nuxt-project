@@ -3,6 +3,20 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   try {
+    const userEmail = event.req.headers["user-email"] as string;
+    const user = await prisma.user.findUnique({
+      where: {
+        email: userEmail,
+      },
+    });
+    if (!user) {
+      setResponseStatus(event, 404);
+      return { error: "User not found" };
+    }
+    if (user.role !== "ADMIN") {
+      setResponseStatus(event, 403);
+      return { error: "Only admin can create category" };
+    }
     const category = await prisma.category.create({
       data: body,
     });

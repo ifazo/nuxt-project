@@ -30,7 +30,7 @@
               :src="product.imageSrc"
               :alt="product.imageAlt"
               class="h-full w-full object-cover object-center"
-            />
+            >
           </div>
           <div class="pt-10 pb-4 text-center">
             <h3 class="text-sm font-medium text-gray-900">

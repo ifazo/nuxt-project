@@ -52,7 +52,7 @@
                 :src="product.image"
                 alt=""
                 class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200"
-              />
+              >
               <div class="min-w-0 flex-1">
                 <p class="text-sm font-medium text-gray-900">
                   {{ product.name }}

@@ -30,7 +30,7 @@
               :src="product.images[0]"
               :alt="product.title"
               class="object-cover object-center"
-            />
+            >
           </div>
         </div>
 
@@ -251,7 +251,7 @@
                       :src="review.avatarSrc"
                       alt=""
                       class="h-10 w-10 rounded-full bg-gray-100"
-                    />
+                    >
                   </div>
                   <div
                     :class="[

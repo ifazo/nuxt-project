@@ -32,10 +32,10 @@
               <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                   <div
-                    class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-amber-100 sm:mx-0 sm:size-10"
+                    class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-indigo-100 sm:mx-0 sm:size-10"
                   >
-                    <StarIcon
-                      class="size-6 text-yellow-400"
+                    <ShoppingBagIcon
+                      class="h-6 w-6 text-indigo-700"
                       aria-hidden="true"
                     />
                   </div>
@@ -43,75 +43,76 @@
                     <DialogTitle
                       as="h3"
                       class="text-base font-semibold text-gray-900"
-                      >Leave a Review</DialogTitle
                     >
+                      Create new category
+                    </DialogTitle>
                     <div class="mt-2">
                       <p class="text-sm text-gray-500">
-                        Share your experience with our product. Your feedback
-                        helps us improve.
+                        Create a new category to organize your products.
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <div class="mt-6">
-                  <!-- Star Rating -->
-                  <div class="mb-4">
-                    <label class="mb-2 block text-sm font-medium text-gray-700"
-                      >Rating</label
-                    >
-                    <div class="flex space-x-2">
-                      <button
-                        v-for="i in 5"
-                        :key="i"
-                        type="button"
-                        class="focus:outline-none"
-                        @click="rating = i"
-                      >
-                        <StarIcon
-                          :class="[
-                            'size-8',
-                            i <= rating
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-200',
-                          ]"
-                        />
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Title Input -->
                   <div class="mb-4">
                     <label
-                      for="review-title"
+                      for="name"
                       class="mb-2 block text-sm font-medium text-gray-700"
-                      >Title</label
+                      >Name</label
                     >
                     <input
-                      id="review-title"
-                      v-model="title"
+                      id="name"
+                      v-model="form.name"
                       type="text"
                       class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      placeholder="Summarize your experience"
+                      placeholder="Enter category name"
+                      required
+                    >
+                  </div>
+
+                  <div class="mb-4">
+                    <label
+                      for="details"
+                      class="mb-2 block text-sm font-medium text-gray-700"
+                      >Details</label
+                    >
+                    <textarea
+                      id="details"
+                      v-model="form.details"
+                      rows="4"
+                      class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                      placeholder="Enter category details"
                       required
                     />
                   </div>
 
-                  <!-- Description Input -->
                   <div class="mb-4">
                     <label
-                      for="review-description"
-                      class="mb-2 block text-sm font-medium text-gray-700"
-                      >Description</label
+                      for="icon"
+                      class="block text-sm font-medium text-gray-700"
+                      >Icon</label
                     >
-                    <textarea
-                      id="review-description"
-                      v-model="description"
-                      rows="4"
-                      class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      placeholder="Tell us more about your experience"
-                      required
-                    />
+                    <div
+                      class="mt-2 grid max-h-64 grid-cols-4 gap-4 overflow-y-auto"
+                    >
+                      <div
+                        v-for="(icon, index) in availableIcons"
+                        :key="index"
+                        class="flex cursor-pointer items-center justify-center rounded-lg border border-gray-300 p-2 hover:border-indigo-500"
+                        :class="form.icon === icon ? 'border-indigo-500' : ''"
+                        @click="selectIcon(icon)"
+                      >
+                        <img
+                          :src="`https://api.iconify.design/lucide:${icon}.svg`"
+                          :alt="icon"
+                          class="h-8 w-8"
+                        >
+                      </div>
+                    </div>
+                    <!-- <p class="mt-2 text-sm text-gray-500">
+                      Select an icon for the category.
+                    </p> -->
                   </div>
                 </div>
               </div>
@@ -121,9 +122,9 @@
                 <button
                   type="button"
                   class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto"
-                  @click.prevent="submitReview"
+                  @click.prevent="handleSubmit"
                 >
-                  Submit Review
+                  Submit
                 </button>
                 <button
                   type="button"
@@ -149,18 +150,11 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import { StarIcon } from "@heroicons/vue/20/solid";
 import { useUserStore } from "@/stores/user";
+import { ShoppingBagIcon } from "@heroicons/vue/24/outline";
+import lucideIcons from "@iconify-json/lucide/icons.json";
 
-const props = defineProps({
-  blogId: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
+defineProps({
   open: {
     type: Boolean,
     required: true,
@@ -172,53 +166,72 @@ const emit = defineEmits(["update:open"]);
 const toast = useToast();
 const userStore = useUserStore();
 
-const rating = ref(0);
-const title = ref("");
-const description = ref("");
+const form = ref({
+  name: "",
+  details: "",
+  icon: null,
+});
+
+const availableIcons = lucideIcons?.icons ? Object.keys(lucideIcons.icons) : [];
+
+const selectIcon = (icon) => {
+  form.value.icon = icon;
+};
 
 const closeModal = () => {
   emit("update:open", false);
+  form.value.name = "";
+  form.value.details = "";
+  form.value.icon = null;
 };
 
-const submitReview = async () => {
-  if (!props.email) {
-    toast.add({
-      title: "Authentication Required",
-      description: "Please sign in to post a review.",
-      color: "warning",
+const handleSubmit = async () => {
+  try {
+    if (!userStore.user) {
+      toast.add({
+        title: "Authentication Required",
+        description: "Please sign in to create a category.",
+        color: "warning",
+      });
+      return navigateTo("/sign-in");
+    }
+
+    const response = await fetch("/api/categories", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "user-email": userStore.user.email,
+      },
+      body: JSON.stringify({
+        icon: form.value.icon,
+        name: form.value.name,
+        details: form.value.details,
+      }),
     });
-    return navigateTo("/sign-in");
-  }
-  const response = await fetch("/api/blogs/reviews", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      blogId: props.blogId,
-      rating: rating.value,
-      title: title.value,
-      description: description.value,
-      userEmail: userStore.user.email,
-    }),
-  });
-  console.log("blog review response:", response);
-  if (!response.ok) {
-    toast.add({
-      title: "Error",
-      description: "Failed to post review",
-      color: "error",
-    });
-  } else {
+
+    if (!response.ok) {
+      toast.add({
+        title: "Error",
+        description: response.statusText || "Failed to create category",
+        color: "error",
+      });
+      return;
+    }
+
     toast.add({
       title: "Success",
-      description: "Review posted successfully",
+      description: "Category created successfully",
       color: "success",
     });
+
+    closeModal();
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    toast.add({
+      title: "Error",
+      description: "Failed to create category",
+      color: "error",
+    });
   }
-  rating.value = 0;
-  title.value = "";
-  description.value = "";
-  closeModal();
 };
 </script>

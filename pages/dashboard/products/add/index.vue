@@ -22,7 +22,7 @@
                 name="title"
                 placeholder="Product name..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -57,7 +57,7 @@
                 step="0.01"
                 name="price"
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -73,7 +73,7 @@
                 min="0"
                 name="stock"
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -96,7 +96,7 @@
                     :src="image.preview"
                     alt="Preview"
                     class="mx-auto h-12 w-12 rounded object-cover"
-                  />
+                  >
                   <PhotoIcon
                     v-else
                     class="mx-auto h-12 w-12 text-gray-300"
@@ -113,7 +113,7 @@
                         type="file"
                         class="sr-only"
                         @change="handleFileChange($event, index)"
-                      />
+                      >
                     </label>
                     <p class="pl-1">or drag and drop</p>
                   </div>
@@ -185,7 +185,7 @@
                 name="highlight-1"
                 placeholder="Highlight 1..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -203,7 +203,7 @@
                 name="highlight-2"
                 placeholder="Highlight 2..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -221,7 +221,7 @@
                 name="highlight-3"
                 placeholder="Highlight 3..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -239,7 +239,7 @@
                 name="highlight-4"
                 placeholder="Highlight 4..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -257,7 +257,7 @@
                 name="highlight-5"
                 placeholder="Highlight 5..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -275,7 +275,7 @@
                 name="highlight-6"
                 placeholder="Highlight 6..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -291,7 +291,7 @@
                 name="tag-1"
                 placeholder="Tag 1..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -307,7 +307,7 @@
                 name="tag-2"
                 placeholder="Tag 2..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -323,7 +323,7 @@
                 name="tag-3"
                 placeholder="Tag 3..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -339,7 +339,7 @@
                 name="tag-4"
                 placeholder="Tag 4..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -355,7 +355,7 @@
                 name="tag-5"
                 placeholder="Tag 5..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
 
@@ -371,7 +371,7 @@
                 name="tag-6"
                 placeholder="Tag 6..."
                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-              />
+              >
             </div>
           </div>
         </div>

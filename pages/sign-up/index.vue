@@ -31,7 +31,7 @@
             class="h-10 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Logo"
-          />
+          >
           <h2
             class="mt-8 text-2xl leading-9 font-bold tracking-tight text-gray-900"
           >
@@ -103,7 +103,7 @@
                     autocomplete="name"
                     required
                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
+                  >
                 </div>
               </div>
 
@@ -122,7 +122,7 @@
                     autocomplete="email"
                     required
                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
+                  >
                 </div>
               </div>
 
@@ -141,7 +141,7 @@
                     autocomplete="current-password"
                     required
                     class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
+                  >
                 </div>
               </div>
 
@@ -152,7 +152,7 @@
                     name="remember-me"
                     type="checkbox"
                     class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
+                  >
                   <label
                     for="remember-me"
                     class="ml-3 block text-sm leading-6 text-gray-700"
@@ -187,20 +187,18 @@
         class="absolute inset-0 h-full w-full object-cover"
         src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
         alt=""
-      />
+      >
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { signUp } from "@/lib/firebase";
 import { useUserStore } from "@/stores/user";
 import { BanknotesIcon, GiftIcon } from "@heroicons/vue/24/outline";
 
 const toast = useToast();
-const router = useRouter();
 
 const userStore = useUserStore();
 
@@ -240,7 +238,7 @@ const handleSignUp = () => {
         description: "User created successfully",
         color: "success",
       });
-      router.push("/");
+      navigateTo("/");
     })
     .catch((err) => {
       toast.add({

@@ -29,7 +29,7 @@
             :src="post.imageUrl"
             alt=""
             class="absolute inset-0 -z-10 h-full w-full object-cover"
-          />
+          >
           <div
             class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"
           />
@@ -53,7 +53,7 @@
                   :src="post.author.imageUrl"
                   alt=""
                   class="h-6 w-6 flex-none rounded-full bg-white/10"
-                />
+                >
                 {{ post.author.name }}
               </div>
             </div>
