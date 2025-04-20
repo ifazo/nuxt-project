@@ -12,7 +12,7 @@
           </NuxtLink>
         </div>
       </li>
-      <li v-for="page in pages" :key="page.name" class="flex">
+      <li class="flex">
         <div class="flex items-center">
           <svg
             class="h-full w-6 flex-shrink-0 text-gray-200"
@@ -24,11 +24,26 @@
             <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
           </svg>
           <NuxtLink
-            :to="page.href"
+            to="/products"
             class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-            :aria-current="page.current ? 'page' : undefined"
-            >{{ page.name }}</NuxtLink
+            >Products</NuxtLink
           >
+        </div>
+      </li>
+      <li class="flex">
+        <div class="flex items-center">
+          <svg
+            class="h-full w-6 flex-shrink-0 text-gray-200"
+            viewBox="0 0 24 44"
+            preserveAspectRatio="none"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+          </svg>
+          <span class="ml-4 text-sm font-medium text-gray-500">
+            {{ title }}
+          </span>
         </div>
       </li>
     </ol>
@@ -38,8 +53,10 @@
 <script setup>
 import { HomeIcon } from "@heroicons/vue/20/solid";
 
-const pages = [
-  { name: "Products", href: "/products", current: false },
-  { name: "Product one", href: "/", current: true },
-];
+defineProps({
+  title: {
+    type: String,
+    default: "Products",
+  },
+});
 </script>

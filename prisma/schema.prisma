@@ -45,6 +45,7 @@ model Blog {
   description String
   content     String
   image       String
+  tag         String @unique
   userId      String @map("user")
   user        User   @relation(fields: [userId], references: [id])
 
@@ -57,7 +58,7 @@ model Blog {
 
 model BlogReview {
   id          String @id @default(uuid())
-  rating      Float
+  rating      Int
   title       String
   description String
   userEmail   String @map("user")
@@ -73,9 +74,8 @@ model BlogReview {
 
 model Category {
   id          String @id @default(uuid())
-  name        String
+  name        String @unique
   image       String
-  slug        String @unique
   description String
 
   createdAt DateTime? @default(now())
@@ -87,10 +87,10 @@ model Category {
 
 model Shop {
   id          String @id @default(uuid())
-  name        String
+  name        String @unique
   image       String
-  slug        String @unique
   description String
+  address     String
   userId      String @map("user")
   user        User   @relation(fields: [userId], references: [id])
 
@@ -106,12 +106,14 @@ model Product {
   title        String
   images       String[]
   description  String
+  highlights   String[]
   price        Float
   stock        Int
-  categorySlug String   @map("category")
-  category     Category @relation(fields: [categorySlug], references: [slug])
-  shopId       String   @map("shop")
-  shop         Shop     @relation(fields: [shopId], references: [id])
+  tags         String[]
+  categoryName String   @map("category")
+  category     Category @relation(fields: [categoryName], references: [name])
+  shopName     String   @map("shop")
+  shop         Shop     @relation(fields: [shopName], references: [id])
 
   createdAt     DateTime?       @default(now())
   updatedAt     DateTime?       @updatedAt
@@ -123,9 +125,8 @@ model Product {
 
 model ProductReview {
   id        String  @id @default(uuid())
-  rating    Float
-  title     String
-  body      String
+  rating    Int
+  comment   String
   userEmail String  @map("user")
   user      User    @relation(fields: [userEmail], references: [email])
   productId String  @map("product")
@@ -151,12 +152,14 @@ model Wishlist {
 }
 
 model Order {
-  id        String  @id @default(uuid())
-  products Json[]
-  total    Float
-  status   OrderStatus @default(PENDING)
-  userEmail String  @map("user")
-  user      User    @relation(fields: [userEmail], references: [email])
+  id         String      @id @default(uuid())
+  products   Json[]
+  total      Float
+  status     OrderStatus @default(PAID)
+  sessionId  String      @map("session_id")
+  customerId String      @map("customer_id")
+  userEmail  String      @map("user")
+  user       User        @relation(fields: [userEmail], references: [email])
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -165,13 +168,11 @@ model Order {
 }
 
 enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
   DELIVERED
   CANCELLED
-  PROCESSING
-  PENDING
-  SHIPPED
-  RETURNED
   REFUNDED
-  COMPLETED
-  FAILED
+  RETURNED
 }

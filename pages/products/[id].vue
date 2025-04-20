@@ -16,7 +16,7 @@
 <template>
   <div class="bg-white">
     <div class="mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <ProductBreadcrumb />
+      <ProductBreadcrumb :title="product.title" />
       <!-- Product -->
       <div
         class="py-8 lg:grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16"
@@ -38,8 +38,8 @@
         <div
           class="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:row-span-2 lg:row-end-2 lg:mt-0 lg:max-w-none"
         >
-          <div class="flex flex-col-reverse">
-            <div class="mt-4">
+          <div class="flex flex-col">
+            <div class="mb-4">
               <h1
                 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
               >
@@ -49,12 +49,8 @@
               <h2 id="information-heading" class="sr-only">
                 Product information
               </h2>
-              <p class="mt-2 text-sm text-gray-500">
-                Version {{ product.version.name }} (Updated
-                <time :datetime="product.version.datetime">{{
-                  product.version.date
-                }}</time
-                >)
+              <p class="text-md mt-2 font-bold text-gray-500">
+                Category: Home Decoration
               </p>
             </div>
 
@@ -72,6 +68,16 @@
                   ]"
                   aria-hidden="true"
                 />
+                <div class="mx-2 flex items-center">
+                  <p class="font-medium text-gray-500">
+                    {{ reviews.average }} out of 5 stars
+                  </p>
+                  <a
+                    href="#reviews"
+                    class="ml-1 font-medium text-indigo-600 hover:text-indigo-500"
+                    >({{ reviews.featured.length }} reviews)</a
+                  >
+                </div>
               </div>
               <p class="sr-only">{{ reviews.average }} out of 5 stars</p>
             </div>
@@ -82,15 +88,15 @@
           <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
             <button
               type="button"
-              @click="handlePayment(product, displayName, email)"
               class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
+              @click="handlePayment(product, displayName, email)"
             >
               Buy ${{ product.price }}
             </button>
             <button
               type="button"
-              @click="addToCartHandler(product)"
               class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
+              @click="addToCartHandler(product)"
             >
               Add to cart
             </button>
@@ -108,15 +114,16 @@
           </div>
 
           <div class="mt-10 border-t border-gray-200 pt-10">
-            <h3 class="text-sm font-medium text-gray-900">License</h3>
-            <p class="mt-4 text-sm text-gray-500">
-              {{ license.summary }}
-              <a
-                :href="license.href"
-                class="font-medium text-indigo-600 hover:text-indigo-500"
-                >Read full license</a
+            <h3 class="text-sm font-medium text-gray-900">Tags</h3>
+            <div class="mt-4">
+              <span
+                v-for="tag in product.tags"
+                :key="tag"
+                class="mr-1.5 inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-sm font-medium text-gray-800"
               >
-            </p>
+                {{ tag }}
+              </span>
+            </div>
           </div>
 
           <div class="mt-10 border-t border-gray-200 pt-10">
@@ -187,6 +194,8 @@
         <div
           class="mx-auto mt-16 w-full max-w-2xl lg:col-span-4 lg:mt-0 lg:max-w-none"
         >
+          <h3 class="my-4 text-sm font-medium text-gray-700">Write a review</h3>
+          <ProductReview :product-id="$route.params.id" :email="email" />
           <TabGroup as="div">
             <div class="border-b border-gray-200">
               <TabList class="-mb-px flex space-x-8">
@@ -318,6 +327,7 @@ import ProductBreadcrumb from "~/components/ProductBreadcrumb.vue";
 import { useCartStore } from "@/stores/cart";
 import { useUserStore } from "@/stores/user";
 import { loadStripe } from "@stripe/stripe-js";
+import ProductReview from "~/components/ProductReview.vue";
 
 // const product = ref(null)
 // const quantity = ref(1)
@@ -388,7 +398,7 @@ const addToCartHandler = (product) => {
 
 const product = {
   title: "Application UI Icon Pack",
-  version: { name: "1.0", date: "June 5, 2021", datetime: "2021-06-05" },
+  images: ["https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg"],
   price: "220",
   description:
     "The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.",
@@ -397,7 +407,8 @@ const product = {
     "Compatible with Figma, Sketch, and Adobe XD",
     "Drawn on 24 x 24 pixel grid",
   ],
-  images: ["https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg"],
+  version: { name: "1.0", date: "June 5, 2021", datetime: "2021-06-05" },
+  tags: ["Icons", "SVG", "Figma", "Sketch", "Playful"],
 };
 
 const reviews = {
@@ -430,6 +441,7 @@ const reviews = {
     // More reviews...
   ],
 };
+
 const faqs = [
   {
     question: "What format are these icons?",
@@ -443,6 +455,7 @@ const faqs = [
   },
   // More FAQs...
 ];
+
 const license = {
   href: "#",
   summary:

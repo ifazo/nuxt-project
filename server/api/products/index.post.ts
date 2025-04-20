@@ -3,12 +3,12 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   try {
-    const review = await prisma.blogReview.create({
+    const product = await prisma.product.create({
       data: body,
     });
-    return review;
+    return product;
   } catch (error) {
-    console.error("Error creating review:", error);
+    console.error("Error creating product:", error);
     setResponseStatus(event, 500);
     return { error: "Internal Server Error" };
   }

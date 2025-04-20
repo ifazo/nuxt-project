@@ -1,104 +1,137 @@
 <template>
-  <div class="bg-white">
-    <div
-      class="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8"
-    >
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-indigo-600">Product reviews</h2>
-        <UButton
-          label="Write a review"
-          color="neutral"
-          variant="outline"
-          class="flex w-md items-center justify-center text-center"
-          @click="open = true"
-        />
-      </div>
-      <ReviewModal v-model:open="open" :blog-id="blogId" />
-      <div
-        class="mt-6 space-y-10 divide-y divide-gray-200 border-t border-b border-gray-200 pb-10"
-      >
+  <div class="flex items-start space-x-4">
+    <div class="flex-shrink-0">
+      <img
+        class="inline-block h-10 w-10 rounded-full"
+        src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        alt=""
+      />
+    </div>
+    <div class="min-w-0 flex-1">
+      <form action="#" class="relative">
         <div
-          v-for="review in reviews"
-          :key="review.id"
-          class="pt-10 lg:grid lg:grid-cols-12 lg:gap-x-8"
+          class="overflow-hidden rounded-lg shadow-sm ring-1 ring-gray-300 ring-inset focus-within:ring-2 focus-within:ring-indigo-600"
         >
-          <div
-            class="lg:col-span-8 lg:col-start-5 xl:col-span-9 xl:col-start-4 xl:grid xl:grid-cols-3 xl:items-start xl:gap-x-8"
-          >
-            <div class="flex items-center xl:col-span-1">
-              <div class="flex items-center">
-                <StarIcon
-                  v-for="rating in [0, 1, 2, 3, 4]"
-                  :key="rating"
-                  :class="[
-                    review.rating > rating
-                      ? 'text-yellow-400'
-                      : 'text-gray-200',
-                    'h-5 w-5 flex-shrink-0',
-                  ]"
-                  aria-hidden="true"
-                />
-              </div>
-              <p class="ml-3 text-sm text-gray-700">
-                {{ review.rating }}<span class="sr-only"> out of 5 stars</span>
-              </p>
+          <label for="comment" class="sr-only">Add your comment</label>
+          <textarea
+            id="comment"
+            v-model="comment"
+            rows="3"
+            name="comment"
+            required
+            class="block w-full resize-none border-0 bg-transparent px-3 py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
+            placeholder="Add your comment..."
+          />
+          <!-- Spacer element to match the height of the toolbar -->
+          <div class="py-2" aria-hidden="true">
+            <div class="py-px">
+              <div class="h-9" />
             </div>
-
-            <div class="mt-4 lg:mt-6 xl:col-span-2 xl:mt-0">
-              <h3 class="text-sm font-medium text-gray-900">
-                {{ review.title }}
-              </h3>
-
-              <div
-                class="mt-3 space-y-6 text-sm text-gray-500"
-                v-html="review.content"
-              />
-            </div>
-          </div>
-
-          <div
-            class="mt-6 flex items-center text-sm lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex-col lg:items-start xl:col-span-3"
-          >
-            <p class="font-medium text-gray-900">{{ review.author }}</p>
-            <time
-              :datetime="review.datetime"
-              class="ml-4 border-l border-gray-200 pl-4 text-gray-500 lg:mt-2 lg:ml-0 lg:border-0 lg:pl-0"
-              >{{ review.date }}</time
-            >
           </div>
         </div>
-      </div>
+
+        <div class="absolute inset-x-0 bottom-0 flex justify-between p-2">
+          <div class="flex items-center space-x-5">
+            <!-- 5-Star Rating -->
+            <div class="flex items-center">
+              <template v-for="star in 5" :key="star">
+                <button
+                  type="button"
+                  :class="star <= rating ? 'text-yellow-400' : 'text-gray-300'"
+                  class="h-6 w-6"
+                  required
+                  @click="setRating(star)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    stroke="none"
+                    class="h-5 w-5"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                    />
+                  </svg>
+                </button>
+              </template>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            <button
+              type="submit"
+              class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              @click.prevent="submitReview"
+            >
+              Review
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { StarIcon } from "@heroicons/vue/20/solid";
-import ReviewModal from "./ReviewModal.vue";
 
-defineProps({
-  blogId: {
-    type: Number,
+const props = defineProps({
+  productId: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
     required: true,
   },
 });
 
-const open = ref(false);
+const toast = useToast();
 
-const reviews = [
-  {
-    id: 1,
-    title: "Can't say enough good things",
-    rating: 5,
-    content: `
-          <p>I was really pleased with the overall shopping experience. My order even included a little personal, handwritten note, which delighted me!</p>
-          <p>The product quality is amazing, it looks and feel even better than I had anticipated. Brilliant stuff! I would gladly recommend this store to my friends. And, now that I think of it... I actually have, many times!</p>
-        `,
-    author: "Risako M",
-    date: "May 16, 2021",
-    datetime: "2021-01-06",
-  },
-  // More reviews...
-];
+const rating = ref(0);
+const comment = ref("");
+
+const setRating = (value) => {
+  rating.value = value;
+};
+
+const submitReview = async () => {
+  if (!props.email) {
+    toast.add({
+      title: "Authentication Required",
+      description: "Please sign in to post a review.",
+      color: "warning",
+    });
+    return navigateTo("/sign-in");
+  }
+  const response = await fetch("/api/products/reviews", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      productId: props.productId,
+      userEmail: props.email,
+      rating: rating.value,
+      comment: comment.value,
+    }),
+  });
+  // console.log("blog review response:", response);
+  if (!response.ok) {
+    toast.add({
+      title: "Error",
+      description: "Failed to post review",
+      color: "error",
+    });
+  } else {
+    toast.add({
+      title: "Success",
+      description: "Review posted successfully",
+      color: "success",
+    });
+  }
+
+  rating.value = 0;
+  comment.value = "";
+};
 </script>

@@ -61,11 +61,11 @@
                 <!-- Filters -->
                 <form class="mt-4">
                   <Disclosure
-                    as="div"
                     v-for="section in filters"
                     :key="section.name"
-                    class="border-t border-gray-200 pt-4 pb-4"
                     v-slot="{ open }"
+                    as="div"
+                    class="border-t border-gray-200 pt-4 pb-4"
                   >
                     <fieldset>
                       <legend class="w-full px-2">

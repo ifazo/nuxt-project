@@ -16,10 +16,20 @@ export default defineEventHandler(async (event) => {
       throw new Error("Missing customer name or email");
     }
 
-    const customer = await stripe.customers.create({
+    let customer;
+    const existingCustomers = await stripe.customers.list({
       email,
-      name,
+      limit: 1,
     });
+
+    if (existingCustomers.data.length > 0) {
+      customer = existingCustomers.data[0];
+    } else {
+      customer = await stripe.customers.create({
+        email,
+        name,
+      });
+    }
 
     const stripeSession = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -41,8 +51,10 @@ export default defineEventHandler(async (event) => {
     });
 
     const order = {
-      products,
       userEmail: email,
+      sessionId: stripeSession.id,
+      customerId: customer.id,
+      products,
       total: products.reduce(
         (acc: number, product: { price: number; quantity: number }) =>
           acc + product.price * (product.quantity || 1),

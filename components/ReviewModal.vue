@@ -157,6 +157,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
   open: {
     type: Boolean,
     required: true,
@@ -177,6 +181,14 @@ const closeModal = () => {
 };
 
 const submitReview = async () => {
+  if (!props.email) {
+    toast.add({
+      title: "Authentication Required",
+      description: "Please sign in to post a review.",
+      color: "warning",
+    });
+    return navigateTo("/sign-in");
+  }
   const response = await fetch("/api/blogs/reviews", {
     method: "POST",
     headers: {

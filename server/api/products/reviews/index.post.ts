@@ -3,7 +3,7 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   try {
-    const review = await prisma.blogReview.create({
+    const review = await prisma.productReview.create({
       data: body,
     });
     return review;
