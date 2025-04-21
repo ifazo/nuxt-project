@@ -393,7 +393,7 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { PhotoIcon } from "@heroicons/vue/24/solid";
 import { ChevronDownIcon } from "@heroicons/vue/16/solid";
 import { ref } from "vue";
@@ -403,10 +403,10 @@ const toast = useToast();
 const form = ref({
   title: "",
   images: [
-    { file: null, preview: null },
-    { file: null, preview: null },
-    { file: null, preview: null },
-    { file: null, preview: null },
+    { file: null as File | null, preview: null as string | null },
+    { file: null as File | null, preview: null as string | null },
+    { file: null as File | null, preview: null as string | null },
+    { file: null as File | null, preview: null as string | null },
   ],
   description: "",
   highlights: [],
@@ -417,13 +417,16 @@ const form = ref({
   shop: "",
 });
 
-const handleFileChange = (event, index) => {
-  const file = event.target.files[0];
-  if (file) {
-    form.value.images[index] = {
-      file,
-      preview: URL.createObjectURL(file),
-    };
+const handleFileChange = (event: Event, index: number) => {
+  const target = event.target as HTMLInputElement;
+  if (target && target.files) {
+    const file = target.files[0];
+    if (file) {
+      form.value.images[index] = {
+        file,
+        preview: URL.createObjectURL(file),
+      };
+    }
   }
 };
 

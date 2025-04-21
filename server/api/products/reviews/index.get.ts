@@ -2,7 +2,7 @@ import prisma from "~/prisma";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const reviews = await prisma.review.findMany({
+  const reviews = await prisma.productReview.findMany({
     where: {
       productId: query.productId as string,
     },

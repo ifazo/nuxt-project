@@ -202,7 +202,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import { signIn, signInWithGithub, signInWithGoogle } from "@/lib/firebase";
 import { useUserStore } from "@/stores/user";
@@ -223,15 +223,33 @@ const submitForm = () => {
 const handleSignIn = () => {
   const { email, password } = form.value;
   signIn(email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
-      userStore.setUser(user);
-      toast.add({
-        title: "Success",
-        description: "User signed in successfully",
-        color: "success",
-      });
-      navigateTo("/");
+      try {
+        const userData = await $fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: {
+            email: user.email,
+          },
+        });
+        userStore.setUser(userData);
+        toast.add({
+          title: "Success",
+          description: "User signed in successfully",
+          color: "success",
+        });
+        navigateTo("/");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.add({
+          title: "Error",
+          description: "Failed to fetch user data",
+          color: "error",
+        });
+      }
     })
     .catch((err) => {
       toast.add({
@@ -246,10 +264,8 @@ const handleGoogleSignIn = () => {
   signInWithGoogle()
     .then(async (userCredential) => {
       const user = userCredential.user;
-      userStore.setUser(user);
-
       try {
-        await $fetch("/api/users", {
+        const userData = await $fetch("/api/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -260,16 +276,21 @@ const handleGoogleSignIn = () => {
             email: user.email,
           },
         });
+        userStore.setUser(userData);
+        toast.add({
+          title: "Success",
+          description: "Google signed in successfully",
+          color: "success",
+        });
+        navigateTo("/");
       } catch (error) {
         console.error("Error creating user:", error);
+        toast.add({
+          title: "Error",
+          description: "Failed to create user",
+          color: "error",
+        });
       }
-
-      toast.add({
-        title: "Success",
-        description: "Google signed in successfully",
-        color: "success",
-      });
-      navigateTo("/");
     })
     .catch((err) => {
       toast.add({
@@ -284,10 +305,8 @@ const handleGitHubSignIn = () => {
   signInWithGithub()
     .then(async (userCredential) => {
       const user = userCredential.user;
-      userStore.setUser(user);
-
       try {
-        await $fetch("/api/users", {
+        const userData = await $fetch("/api/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -298,16 +317,21 @@ const handleGitHubSignIn = () => {
             email: user.email,
           },
         });
+        userStore.setUser(userData);
+        toast.add({
+          title: "Success",
+          description: "Google signed in successfully",
+          color: "success",
+        });
+        navigateTo("/");
       } catch (error) {
         console.error("Error creating user:", error);
+        toast.add({
+          title: "Error",
+          description: "Failed to create user",
+          color: "error",
+        });
       }
-
-      toast.add({
-        title: "Success",
-        description: "GitHub signed in successfully",
-        color: "success",
-      });
-      navigateTo("/");
     })
     .catch((err) => {
       toast.add({

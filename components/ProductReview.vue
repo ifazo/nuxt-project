@@ -72,15 +72,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
+import { useUserStore } from "@/stores/user";
 
 const props = defineProps({
   productId: {
-    type: String,
-    required: true,
-  },
-  email: {
     type: String,
     required: true,
   },
@@ -88,15 +85,22 @@ const props = defineProps({
 
 const toast = useToast();
 
+const userStore = useUserStore();
+const user = computed(() => userStore.user);
+
+onMounted(() => {
+  userStore.initializeUser();
+});
+
 const rating = ref(0);
 const comment = ref("");
 
-const setRating = (value) => {
+const setRating = (value: number) => {
   rating.value = value;
 };
 
 const submitReview = async () => {
-  if (!props.email) {
+  if (!user.value || !user.value.email) {
     toast.add({
       title: "Authentication Required",
       description: "Please sign in to post a review.",
@@ -110,10 +114,10 @@ const submitReview = async () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      productId: props.productId,
-      userEmail: props.email,
       rating: rating.value,
       comment: comment.value,
+      productId: props.productId,
+      userEmail: user.value.email,
     }),
   });
   // console.log("blog review response:", response);

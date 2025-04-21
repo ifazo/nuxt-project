@@ -50,7 +50,7 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { HomeIcon } from "@heroicons/vue/20/solid";
 
 defineProps({

@@ -89,7 +89,7 @@
             <button
               type="button"
               class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
-              @click="handlePayment(product, displayName, email)"
+              @click.prevent="handlePayment({ ...product, quantity: quantity })"
             >
               Buy ${{ product.price }}
             </button>
@@ -195,7 +195,13 @@
           class="mx-auto mt-16 w-full max-w-2xl lg:col-span-4 lg:mt-0 lg:max-w-none"
         >
           <h3 class="my-4 text-sm font-medium text-gray-700">Write a review</h3>
-          <ProductReview :product-id="$route.params.id" :email="email" />
+          <ProductReview
+            :product-id="
+              Array.isArray($route.params.id)
+                ? $route.params.id[0]
+                : $route.params.id
+            "
+          />
           <TabGroup as="div">
             <div class="border-b border-gray-200">
               <TabList class="-mb-px flex space-x-8">
@@ -320,7 +326,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb.vue";
@@ -328,28 +334,29 @@ import { useCartStore } from "@/stores/cart";
 import { useUserStore } from "@/stores/user";
 import { loadStripe } from "@stripe/stripe-js";
 import ProductReview from "~/components/ProductReview.vue";
+import type { CartItem } from "~/stores/cart";
+import type { Product } from "@prisma/client";
 
 // const product = ref(null)
-// const quantity = ref(1)
+const quantity = ref(1);
+
+const config = useRuntimeConfig();
+const stripePromise = loadStripe(
+  config.public.STRIPE_PUBLISHABLE_KEY as string,
+);
 
 const toast = useToast();
 
 const cartStore = useCartStore();
 const userStore = useUserStore();
-
-const config = useRuntimeConfig();
-const stripePromise = loadStripe(config.public.stripePublishableKey);
-
 const user = computed(() => userStore.user);
-const displayName = computed(() => user.value?.displayName || "");
-const email = computed(() => user.value?.email || "");
 
-const handlePayment = async (product, displayName, email) => {
-  const stripe = await stripePromise;
-  if (!stripe) {
-    return;
-  }
-  if (!displayName || !email) {
+onMounted(() => {
+  userStore.initializeUser();
+});
+
+const handlePayment = async (product: CartItem) => {
+  if (!user.value) {
     toast.add({
       title: "Authentication Required",
       description: "Please sign in to proceed with payment.",
@@ -357,16 +364,27 @@ const handlePayment = async (product, displayName, email) => {
     });
     return navigateTo("/sign-in");
   }
+  const stripe = await stripePromise;
+  if (!stripe) {
+    toast.add({
+      title: "Stripe Initialization Error",
+      description: "Failed to initialize Stripe. Please try again later.",
+      color: "error",
+    });
+    return;
+  }
   try {
     const response = await $fetch("/api/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: { products: [product], name: displayName, email },
+      body: {
+        products: [product],
+        name: user.value.name,
+        email: user.value.email,
+      },
     });
-
-    console.log("Response from server:", response);
 
     if (!response || !response.id) {
       throw new Error("Invalid response from server");
@@ -387,7 +405,7 @@ const handlePayment = async (product, displayName, email) => {
   }
 };
 
-const addToCartHandler = (product) => {
+const addToCartHandler = (product: Product) => {
   cartStore.addToCart(product);
   toast.add({
     title: "Success",
@@ -397,9 +415,13 @@ const addToCartHandler = (product) => {
 };
 
 const product = {
+  id: "1",
+  createdAt: null,
+  updatedAt: null,
   title: "Application UI Icon Pack",
   images: ["https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg"],
-  price: "220",
+  price: 220,
+  stock: 100,
   description:
     "The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.",
   highlights: [
@@ -407,8 +429,9 @@ const product = {
     "Compatible with Figma, Sketch, and Adobe XD",
     "Drawn on 24 x 24 pixel grid",
   ],
-  version: { name: "1.0", date: "June 5, 2021", datetime: "2021-06-05" },
   tags: ["Icons", "SVG", "Figma", "Sketch", "Playful"],
+  categoryName: "Home Decoration",
+  shopName: "Icon Store",
 };
 
 const reviews = {

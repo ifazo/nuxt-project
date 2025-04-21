@@ -1,23 +1,24 @@
 import prisma from "~/prisma";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
   try {
-    const existingUser = await prisma.user.findUnique({
+    const body = await readBody(event);
+    if (!body.email) {
+      setResponseStatus(event, 400);
+      return { error: "Email is required" };
+    }
+
+    let user = await prisma.user.findUnique({
       where: {
         email: body.email,
       },
     });
 
-    if (existingUser) {
-      setResponseStatus(event, 409);
-      return { error: "User already exists" };
+    if (!user) {
+      user = await prisma.user.create({
+        data: body,
+      });
     }
-
-    const user = await prisma.user.create({
-      data: body,
-    });
-
     return user;
   } catch (error) {
     console.error("Error creating user:", error);

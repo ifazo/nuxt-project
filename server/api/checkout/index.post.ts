@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import Stripe from "stripe";
 import prisma from "~/prisma";
 import type { CartItem } from "~/stores/cart";
@@ -31,39 +32,41 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    const lineItems = products.map((product: CartItem) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: product.title,
+          images: product.images,
+        },
+        unit_amount: Math.round(product.price * 100),
+      },
+      quantity: product.quantity || 1,
+    }));
+
     const stripeSession = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: products.map((product: CartItem) => ({
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: product.title,
-            images: product.images,
-          },
-          unit_amount: Math.round(product.price * 100),
-        },
-        quantity: product.quantity || 1,
-      })),
+      line_items: lineItems,
       mode: "payment",
       customer: customer.id,
       success_url: `${getRequestURL(event).origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${getRequestURL(event).origin}/cancel`,
     });
 
-    const order = {
-      userEmail: email,
-      sessionId: stripeSession.id,
-      customerId: customer.id,
-      products,
-      total: products.reduce(
-        (acc: number, product: { price: number; quantity: number }) =>
-          acc + product.price * (product.quantity || 1),
-        0,
-      ),
-    };
+    const total = products.reduce(
+      (acc: number, product: { price: number; quantity: number }) =>
+        acc + product.price * (product.quantity || 1),
+      0,
+    );
 
     await prisma.order.create({
-      data: order,
+      data: {
+        userEmail: email,
+        sessionId: stripeSession.id,
+        customerId: customer.id,
+        products: products as Prisma.InputJsonValue[],
+        total,
+      },
     });
 
     return { id: stripeSession.id };

@@ -192,7 +192,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import { signUp } from "@/lib/firebase";
 import { useUserStore } from "@/stores/user";
@@ -218,9 +218,15 @@ const handleSignUp = () => {
   signUp(email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
-      userStore.setUser(user);
-
-      await $fetch("/api/users", {
+      if (!user) {
+        toast.add({
+          title: "Error",
+          description: "Firebase user not created",
+          color: "error",
+        });
+        return;
+      }
+      const userData = await $fetch("/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -232,7 +238,7 @@ const handleSignUp = () => {
           password: password,
         },
       });
-
+      userStore.setUser(userData);
       toast.add({
         title: "Success",
         description: "User created successfully",

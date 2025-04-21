@@ -142,7 +142,7 @@
   </TransitionRoot>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   Dialog,
   DialogPanel,
@@ -166,7 +166,11 @@ const emit = defineEmits(["update:open"]);
 const toast = useToast();
 const userStore = useUserStore();
 
-const form = ref({
+const form = ref<{
+  name: string;
+  details: string;
+  icon: string | null;
+}>({
   name: "",
   details: "",
   icon: null,
@@ -174,7 +178,7 @@ const form = ref({
 
 const availableIcons = lucideIcons?.icons ? Object.keys(lucideIcons.icons) : [];
 
-const selectIcon = (icon) => {
+const selectIcon = (icon: string | null) => {
   form.value.icon = icon;
 };
 

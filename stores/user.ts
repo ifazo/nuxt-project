@@ -1,11 +1,11 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import type { User } from "firebase/auth";
+import type { User } from "@prisma/client";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref<User | null>(null);
 
-  function setUser(userData: User | null) {
+  function setUser(userData: User) {
     user.value = userData;
     localStorage.setItem("user", JSON.stringify(userData));
   }

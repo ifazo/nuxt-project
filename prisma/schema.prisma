@@ -27,13 +27,13 @@ model User {
   password String?
   role     UserRole @default(BUYER)
 
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  order    Order[]
-  wishlist  Wishlist[]
-  blog      Blog[]
-  shop      Shop?
-  review    Review[]
+  createdAt     DateTime?       @default(now())
+  updatedAt     DateTime?       @updatedAt
+  order         Order[]
+  wishlist      Wishlist[]
+  blog          Blog[]
+  shop          Shop?
+  productReview ProductReview[]
 
   @@map("users")
 }
@@ -46,7 +46,7 @@ model Category {
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-  product  Product[]
+  product   Product[]
 
   @@map("categories")
 }
@@ -80,15 +80,15 @@ model Product {
   shopName     String   @map("shop")
   shop         Shop     @relation(fields: [shopName], references: [id])
 
-  createdAt DateTime?  @default(now())
-  updatedAt DateTime?  @updatedAt
-  wishlist  Wishlist[]
-  review    Review[]
+  createdAt     DateTime?       @default(now())
+  updatedAt     DateTime?       @updatedAt
+  wishlist      Wishlist[]
+  productReview ProductReview[]
 
   @@map("products")
 }
 
-model Review {
+model ProductReview {
   id        String  @id @default(uuid())
   rating    Int
   comment   String
@@ -100,7 +100,7 @@ model Review {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@map("reviews")
+  @@map("product_reviews")
 }
 
 model Blog {

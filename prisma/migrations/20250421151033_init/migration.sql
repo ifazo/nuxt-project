@@ -22,8 +22,8 @@ CREATE TABLE "users" (
 CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "icon" TEXT NOT NULL,
     "details" TEXT NOT NULL,
+    "icon" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
@@ -34,8 +34,8 @@ CREATE TABLE "categories" (
 CREATE TABLE "shops" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "logo" TEXT NOT NULL,
     "details" TEXT NOT NULL,
+    "logo" TEXT NOT NULL,
     "user" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -62,7 +62,7 @@ CREATE TABLE "products" (
 );
 
 -- CreateTable
-CREATE TABLE "reviews" (
+CREATE TABLE "product_reviews" (
     "id" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
     "comment" TEXT NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE "reviews" (
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
 
-    CONSTRAINT "reviews_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "product_reviews_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -140,10 +140,10 @@ ALTER TABLE "products" ADD CONSTRAINT "products_category_fkey" FOREIGN KEY ("cat
 ALTER TABLE "products" ADD CONSTRAINT "products_shop_fkey" FOREIGN KEY ("shop") REFERENCES "shops"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "reviews" ADD CONSTRAINT "reviews_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "product_reviews" ADD CONSTRAINT "product_reviews_product_fkey" FOREIGN KEY ("product") REFERENCES "products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "blogs" ADD CONSTRAINT "blogs_user_fkey" FOREIGN KEY ("user") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;

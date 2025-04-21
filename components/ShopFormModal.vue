@@ -161,7 +161,7 @@
   </TransitionRoot>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   Dialog,
   DialogPanel,
@@ -184,16 +184,21 @@ const emit = defineEmits(["update:open"]);
 const toast = useToast();
 const userStore = useUserStore();
 
-const previewImage = ref(null);
+const previewImage = ref<string | null>(null);
 
-const form = ref({
+const form = ref<{
+  name: string;
+  logo: File | null;
+  details: string;
+}>({
   name: "",
   logo: null,
   details: "",
 });
 
-const handleFileChange = (event) => {
-  const file = event.target.files[0];
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
   if (file) {
     form.value.logo = file;
     previewImage.value = URL.createObjectURL(file);

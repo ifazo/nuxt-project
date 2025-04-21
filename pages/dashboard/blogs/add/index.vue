@@ -5,7 +5,7 @@
         <h2 class="text-base/7 font-semibold text-gray-900">Blog</h2>
         <p class="mt-1 text-sm/6 text-gray-600">
           Put your blog information here. Make sure to include a title and a
-          content with photo...
+          content with image...
         </p>
 
         <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -76,9 +76,9 @@
               class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
             >
               <div class="text-center">
-                <div v-if="form.photo">
+                <div v-if="form.image">
                   <img
-                    :src="previewImage"
+                    :src="previewImage || undefined"
                     alt="Image Preview"
                     class="mx-auto h-24 w-24 rounded-md object-cover"
                   >
@@ -128,25 +128,31 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { PhotoIcon } from "@heroicons/vue/24/solid";
 import { ref } from "vue";
 
 const toast = useToast();
 
-const previewImage = ref(null);
+const previewImage = ref<string | null>(null);
 
-const form = ref({
+const form = ref<{
+  title: string;
+  description: string;
+  content: string;
+  image: File | null;
+}>({
   title: "",
   description: "",
   content: "",
   image: null,
 });
 
-const handleFileChange = (event) => {
-  const file = event.target.files[0];
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
   if (file) {
-    form.value.photo = file;
+    form.value.image = file;
     previewImage.value = URL.createObjectURL(file);
   }
 };
@@ -154,9 +160,9 @@ const handleFileChange = (event) => {
 const handleSubmit = async () => {
   try {
     let imageUrl = "";
-    if (form.value.photo) {
+    if (form.value.image) {
       const formData = new FormData();
-      formData.append("image", form.value.photo);
+      formData.append("image", form.value.image);
 
       const imgbbResponse = await fetch(
         `https://api.imgbb.com/1/upload?key=187d3aec661ecb2f9b3fa1a76eab6014`,
@@ -197,7 +203,7 @@ const handleSubmit = async () => {
     });
     form.value.title = "";
     form.value.content = "";
-    form.value.photo = null;
+    form.value.image = null;
   } catch (error) {
     console.error("Error submitting form:", error);
     toast.add({
