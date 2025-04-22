@@ -16,7 +16,11 @@ export default defineNuxtConfig({
   ],
   image: {
     dir: "assets/images",
-    domains: ["https://tailwindui.com"],
+    domains: [
+      "https://tailwindui.com",
+      "https://i.ibb.co.com",
+      "https://lh3.googleusercontent.com",
+    ],
   },
   runtimeConfig: {
     // Private variables (server-side only)

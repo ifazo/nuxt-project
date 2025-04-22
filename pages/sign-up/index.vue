@@ -37,8 +37,8 @@
           >
             Sign up for new account
           </h2>
-          <p class="mt-2 text-sm leading-6 text-gray-500">
-            Already a member?
+          <p class="mt-2 text-sm leading-6 font-medium text-gray-500">
+            Already have an account?
             {{ " " }}
             <NuxtLink
               to="/sign-in"
@@ -90,6 +90,25 @@
             <form class="space-y-6" @submit.prevent="submitForm">
               <div>
                 <label
+                  for="image"
+                  class="block text-sm leading-6 font-medium text-gray-900"
+                >
+                  Profile Picture
+                </label>
+                <div class="mt-2">
+                  <input
+                    id="image"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    name="image"
+                    accept="image/*"
+                    type="file"
+                    @change="handleFileChange"
+                  >
+                </div>
+              </div>
+
+              <div>
+                <label
                   for="name"
                   class="block text-sm leading-6 font-medium text-gray-900"
                   >Full Name</label
@@ -102,7 +121,7 @@
                     type="text"
                     autocomplete="name"
                     required
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   >
                 </div>
               </div>
@@ -121,7 +140,7 @@
                     type="email"
                     autocomplete="email"
                     required
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   >
                 </div>
               </div>
@@ -140,7 +159,7 @@
                     type="password"
                     autocomplete="current-password"
                     required
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   >
                 </div>
               </div>
@@ -155,16 +174,16 @@
                   >
                   <label
                     for="remember-me"
-                    class="ml-3 block text-sm leading-6 text-gray-700"
-                    >Remember me</label
+                    class="ml-3 block text-sm leading-6 font-medium text-gray-700"
+                    >Agreed to</label
                   >
                 </div>
 
                 <div class="text-sm leading-6">
-                  <NuxtLink
-                    to="/forget-password"
+                  <a
+                    to="/terms-conditions"
                     class="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >Forgot password?</NuxtLink
+                    >Terms & conditions!</a
                   >
                 </div>
               </div>
@@ -204,6 +223,7 @@ const userStore = useUserStore();
 
 const form = ref({
   role: "BUYER",
+  image: null,
   name: "",
   email: "",
   password: "",
@@ -213,8 +233,46 @@ const submitForm = () => {
   handleSignUp();
 };
 
-const handleSignUp = () => {
-  const { role, name, email, password } = form.value;
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  form.value.image = file;
+};
+
+const handleSignUp = async () => {
+  toast.add({
+    title: "Loading",
+    description: "Creating your account...",
+    color: "info",
+  });
+  const { role, image, name, email, password } = form.value;
+  let imageUrl = "";
+  if (image) {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const imgbbResponse = await fetch(
+      `https://api.imgbb.com/1/upload?key=187d3aec661ecb2f9b3fa1a76eab6014`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+
+    const imgbbData = await imgbbResponse.json();
+
+    if (imgbbData.success) {
+      imageUrl = imgbbData.data.url;
+    } else {
+      console.error("Image upload failed:", imgbbData);
+      toast.add({
+        title: "Error",
+        description: "Image upload failed",
+        color: "error",
+      });
+      return;
+    }
+  }
+
   signUp(email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
@@ -233,6 +291,7 @@ const handleSignUp = () => {
         },
         body: {
           role: role,
+          image: imageUrl,
           name: name,
           email: email,
           password: password,

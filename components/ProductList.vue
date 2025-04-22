@@ -36,7 +36,11 @@
             <h3 class="text-sm font-medium text-gray-900">
               <NuxtLink :to="`/products/${product.href}`">
                 <span aria-hidden="true" class="absolute inset-0" />
-                {{ product.name }}
+                {{
+                  product.name.length > 20
+                    ? product.name.slice(0, 20) + "..."
+                    : product.name
+                }}
               </NuxtLink>
             </h3>
             <div class="mt-3 flex flex-col items-center">

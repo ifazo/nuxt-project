@@ -1,12 +1,13 @@
 <template>
   <div class="flex items-start space-x-4">
-    <div class="flex-shrink-0">
+    <div v-if="user && user.image" class="flex-shrink-0">
       <img
         class="inline-block h-10 w-10 rounded-full"
-        src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        :src="user.image"
         alt=""
       >
     </div>
+    <UserCircleIcon v-else class="h-10 w-10 flex-shrink-0 text-gray-400" />
     <div class="min-w-0 flex-1">
       <form action="#" class="relative">
         <div
@@ -74,6 +75,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { UserCircleIcon } from "@heroicons/vue/24/outline";
 import { useUserStore } from "@/stores/user";
 
 const props = defineProps({

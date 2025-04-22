@@ -8,7 +8,7 @@
     <body class="h-full">
     ```
   -->
-  <div>
+  <div v-if="user">
     <TransitionRoot as="template" :show="sidebarOpen">
       <Dialog
         as="div"
@@ -96,29 +96,47 @@
               </nav>
             </div>
             <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <NuxtLink href="/" class="group block flex-shrink-0">
+              <NuxtLink
+                to="/dashboard/profile"
+                class="group block flex-shrink-0"
+              >
                 <div class="flex items-center">
-                  <div>
+                  <div v-if="user.image">
                     <img
                       class="inline-block h-10 w-10 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      :src="user.image"
                       alt=""
                     >
+                  </div>
+                  <div v-else>
+                    <UserCircleIcon
+                      class="h-10 w-10 flex-shrink-0 text-gray-400"
+                    />
                   </div>
                   <div class="ml-3">
                     <p
                       class="text-base font-medium text-gray-700 group-hover:text-gray-900"
                     >
-                      Tom Cook
+                      {{ user.name }}
                     </p>
                     <p
                       class="text-sm font-medium text-gray-500 group-hover:text-gray-700"
                     >
-                      View profile
+                      {{ user.email }}
                     </p>
                   </div>
                 </div>
               </NuxtLink>
+              <button
+                type="button"
+                class="ml-auto flex h-10 w-10 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
+                @click="handleSignOut"
+              >
+                <ArrowRightStartOnRectangleIcon
+                  class="h-6 w-6"
+                  aria-hidden="true"
+                />
+              </button>
             </div>
           </div>
         </TransitionChild>
@@ -174,29 +192,45 @@
           </nav>
         </div>
         <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
-          <a href="#" class="group block w-full flex-shrink-0">
+          <NuxtLink
+            to="/dashboard/profile"
+            class="group block w-full flex-shrink-0"
+          >
             <div class="flex items-center">
-              <div>
+              <div v-if="user.image">
                 <img
                   class="inline-block h-9 w-9 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  :src="user.image"
                   alt=""
                 >
+              </div>
+              <div v-else>
+                <UserCircleIcon class="h-9 w-9 flex-shrink-0 text-gray-400" />
               </div>
               <div class="ml-3">
                 <p
                   class="text-sm font-medium text-gray-700 group-hover:text-gray-900"
                 >
-                  Tom Cook
+                  {{ user.name }}
                 </p>
                 <p
                   class="text-xs font-medium text-gray-500 group-hover:text-gray-700"
                 >
-                  View profile
+                  {{ user.email }}
                 </p>
               </div>
             </div>
-          </a>
+          </NuxtLink>
+          <button
+            type="button"
+            class="ml-auto flex h-8 w-8 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
+            @click="handleSignOut"
+          >
+            <ArrowRightStartOnRectangleIcon
+              class="h-6 w-6"
+              aria-hidden="true"
+            />
+          </button>
         </div>
       </div>
     </div>
@@ -216,7 +250,12 @@
       <main class="flex-1">
         <div class="py-6">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-            <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
+            <h1 class="text-2xl font-semibold text-gray-900">
+              {{
+                user.role.charAt(0) + user.role.slice(1).toLowerCase()
+              }}
+              Dashboard
+            </h1>
           </div>
           <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
             <!-- Replace with your content -->
@@ -245,10 +284,25 @@ import {
   InboxIcon,
   Bars2Icon,
   UsersIcon,
+  UserCircleIcon,
   XMarkIcon,
+  ArrowRightStartOnRectangleIcon,
 } from "@heroicons/vue/24/outline";
+import { signOut } from "~/lib/firebase";
+import { useUserStore } from "@/stores/user";
 
-const navigation = [
+const sidebarOpen = ref(false);
+
+const toast = useToast();
+
+const userStore = useUserStore();
+const user = computed(() => userStore.user);
+
+onMounted(() => {
+  userStore.initializeUser();
+});
+
+const buyerNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   {
     name: "Blogs",
@@ -257,9 +311,42 @@ const navigation = [
     current: false,
   },
   {
+    name: "Orders",
+    href: "/dashboard/orders",
+    icon: ChartBarIcon,
+    current: false,
+  },
+  {
+    name: "Profile",
+    href: "/dashboard/profile",
+    icon: InboxIcon,
+    current: false,
+  },
+];
+
+const sellerNavigation = [
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+  {
     name: "Products",
     href: "/dashboard/products",
     icon: FolderIcon,
+    current: false,
+  },
+  { name: "Shops", href: "/dashboard/shops", icon: InboxIcon, current: false },
+  {
+    name: "Profile",
+    href: "/dashboard/profile",
+    icon: InboxIcon,
+    current: false,
+  },
+];
+
+const adminNavigation = [
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+  {
+    name: "Blogs",
+    href: "/dashboard/blogs",
+    icon: UsersIcon,
     current: false,
   },
   {
@@ -268,14 +355,43 @@ const navigation = [
     icon: CalendarIcon,
     current: false,
   },
-  { name: "Shops", href: "/dashboard/shops", icon: InboxIcon, current: false },
   {
-    name: "Orders",
-    href: "/dashboard/orders",
-    icon: ChartBarIcon,
+    name: "Profile",
+    href: "/dashboard/profile",
+    icon: InboxIcon,
     current: false,
   },
 ];
 
-const sidebarOpen = ref(false);
+const navigation = computed(() => {
+  if (user.value?.role === "BUYER") {
+    return buyerNavigation;
+  } else if (user.value?.role === "SELLER") {
+    return sellerNavigation;
+  } else if (user.value?.role === "ADMIN") {
+    return adminNavigation;
+  }
+  return [];
+});
+
+const handleSignOut = () => {
+  signOut()
+    .then(() => {
+      // user.value = null;
+      userStore.removeUser();
+      toast.add({
+        title: "Success",
+        description: "User signed out successfully",
+        color: "success",
+      });
+      navigateTo("/sign-in");
+    })
+    .catch((err) => {
+      toast.add({
+        title: "Error",
+        description: err.message,
+        color: "error",
+      });
+    });
+};
 </script>

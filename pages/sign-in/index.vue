@@ -37,7 +37,7 @@
           >
             Sign in to your account
           </h2>
-          <p class="mt-2 text-sm leading-6 text-gray-500">
+          <p class="mt-2 text-sm leading-6 font-medium text-gray-500">
             Not a member?
             {{ " " }}
             <NuxtLink
@@ -65,7 +65,7 @@
                     type="email"
                     autocomplete="email"
                     required
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   >
                 </div>
               </div>
@@ -84,7 +84,7 @@
                     type="password"
                     autocomplete="current-password"
                     required
-                    class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    class="block w-full rounded-md bg-white px-3 py-1.5 text-sm font-medium text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   >
                 </div>
               </div>
@@ -99,16 +99,16 @@
                   >
                   <label
                     for="remember-me"
-                    class="ml-3 block text-sm leading-6 text-gray-700"
+                    class="ml-3 block text-sm leading-6 font-medium text-gray-700"
                     >Remember me</label
                   >
                 </div>
 
                 <div class="text-sm leading-6">
-                  <NuxtLink
+                  <a
                     to="/forget-password"
                     class="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >Forgot password?</NuxtLink
+                    >Forgot password?</a
                   >
                 </div>
               </div>
@@ -221,6 +221,11 @@ const submitForm = () => {
 };
 
 const handleSignIn = () => {
+  toast.add({
+    title: "Loading",
+    description: "Signing in...",
+    color: "info",
+  });
   const { email, password } = form.value;
   signIn(email, password)
     .then(async (userCredential) => {
