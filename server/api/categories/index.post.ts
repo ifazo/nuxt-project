@@ -1,9 +1,13 @@
 import prisma from "~/prisma";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
   try {
+    const body = await readBody(event);
     const userEmail = event.req.headers["user-email"] as string;
+    if (!userEmail) {
+      setResponseStatus(event, 400);
+      return { error: "User email is required in header as 'user-email'" };
+    }
     const user = await prisma.user.findUnique({
       where: {
         email: userEmail,

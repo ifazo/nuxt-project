@@ -109,6 +109,54 @@
               </div>
             </div>
           </div>
+
+          <div class="sm:col-span-2 sm:col-start-1">
+            <label for="tag-1" class="block text-sm/6 font-medium text-gray-900"
+              >Tag 1</label
+            >
+            <div class="mt-2">
+              <input
+                id="tag-1"
+                v-model="form.tags[0]"
+                type="text"
+                name="tag-1"
+                placeholder="Tag 1..."
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              >
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="tag-2" class="block text-sm/6 font-medium text-gray-900"
+              >Tag 2</label
+            >
+            <div class="mt-2">
+              <input
+                id="tag-2"
+                v-model="form.tags[1]"
+                type="text"
+                name="tag-2"
+                placeholder="Tag 2..."
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              >
+            </div>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="tag-3" class="block text-sm/6 font-medium text-gray-900"
+              >Tag 3</label
+            >
+            <div class="mt-2">
+              <input
+                id="tag-3"
+                v-model="form.tags[2]"
+                type="text"
+                name="tag-3"
+                placeholder="Tag 3..."
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -129,23 +177,33 @@
 </template>
 
 <script setup lang="ts">
-import { PhotoIcon } from "@heroicons/vue/24/solid";
 import { ref } from "vue";
+import { PhotoIcon } from "@heroicons/vue/24/solid";
+import { useUserStore } from "@/stores/user";
 
 const toast = useToast();
+
+const userStore = useUserStore();
+const user = computed(() => userStore.user);
+
+onMounted(() => {
+  userStore.initializeUser();
+});
 
 const previewImage = ref<string | null>(null);
 
 const form = ref<{
   title: string;
+  image: File | null;
   description: string;
   content: string;
-  image: File | null;
+  tags: string[];
 }>({
   title: "",
+  image: null,
   description: "",
   content: "",
-  image: null,
+  tags: [],
 });
 
 const handleFileChange = (event: Event) => {
@@ -188,11 +246,12 @@ const handleSubmit = async () => {
         "Content-Type": "application/json",
       },
       body: {
+        image: imageUrl,
         title: form.value.title,
         description: form.value.description,
         content: form.value.content,
-        image: imageUrl,
-        userId: "bbb232f6-cba8-4108-99ef-9f5368d0333f",
+        tags: form.value.tags,
+        userEmail: user.value?.email,
       },
     });
     console.log("Blog created successfully:", response);
@@ -201,9 +260,12 @@ const handleSubmit = async () => {
       description: "Blog created successfully",
       color: "success",
     });
-    form.value.title = "";
-    form.value.content = "";
     form.value.image = null;
+    form.value.title = "";
+    form.value.description = "";
+    form.value.content = "";
+    form.value.tags = [];
+    previewImage.value = null;
   } catch (error) {
     console.error("Error submitting form:", error);
     toast.add({

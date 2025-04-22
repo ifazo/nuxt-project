@@ -1,8 +1,8 @@
 import prisma from "~/prisma";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
   try {
+    const body = await readBody(event);
     const blog = await prisma.blog.create({
       data: body,
     });

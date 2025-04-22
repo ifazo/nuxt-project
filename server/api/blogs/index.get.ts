@@ -4,28 +4,54 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
-    const { title, userId } = query as Blog;
+    const { title, userEmail } = query as Partial<Blog>;
+
+    let blogs;
+
     if (title) {
-      const blogs = await prisma.blog.findMany({
+      blogs = await prisma.blog.findMany({
         where: {
           title: {
             contains: title,
           },
         },
-      });
-      return blogs;
-    } else if (userId) {
-      const blogs = await prisma.blog.findMany({
-        where: {
-          userId: {
-            contains: userId,
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
           },
         },
       });
-
-      return blogs;
+    } else if (userEmail) {
+      blogs = await prisma.blog.findMany({
+        where: {
+          userEmail: {
+            contains: userEmail,
+          },
+        },
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
+    } else {
+      blogs = await prisma.blog.findMany({
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
     }
-    const blogs = await prisma.blog.findMany();
     return blogs;
   } catch (error) {
     console.error("Error fetching blogs:", error);

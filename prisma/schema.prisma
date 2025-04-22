@@ -78,7 +78,7 @@ model Product {
   categoryName String   @map("category")
   category     Category @relation(fields: [categoryName], references: [name])
   shopName     String   @map("shop")
-  shop         Shop     @relation(fields: [shopName], references: [id])
+  shop         Shop     @relation(fields: [shopName], references: [name])
 
   createdAt     DateTime?       @default(now())
   updatedAt     DateTime?       @updatedAt
@@ -104,14 +104,14 @@ model ProductReview {
 }
 
 model Blog {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   description String
   content     String
   image       String
-  tag         String @unique
-  userEmail   String @map("user")
-  user        User   @relation(fields: [userEmail], references: [email])
+  tags        String[]
+  userEmail   String   @map("user")
+  user        User     @relation(fields: [userEmail], references: [email])
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt

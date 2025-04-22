@@ -11,12 +11,31 @@ export default defineEventHandler(async (event) => {
       where: {
         id,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
     });
     if (!blog) {
       setResponseStatus(event, 404);
       return { error: "Blog not found" };
     }
-    return blog;
+
+    const products = await prisma.product.findMany({
+      where: {
+        tags: {
+          hasSome: blog.tags,
+        },
+      },
+    });
+    return {
+      blog,
+      products,
+    };
   } catch (error) {
     console.error("Error fetching blog:", error);
     setResponseStatus(event, 500);

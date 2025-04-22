@@ -15,7 +15,7 @@
 -->
 <template>
   <div class="bg-white">
-    <div class="mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div v-if="product" class="mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <ProductBreadcrumb :title="product.title" />
       <!-- Product -->
       <div
@@ -74,13 +74,14 @@
               >
                 {{ product.title }}
               </h1>
-
-              <h2 id="information-heading" class="sr-only">
-                Product information
-              </h2>
-              <p class="text-md mt-2 font-bold text-gray-500">
-                Category: Home Decoration
-              </p>
+              <div class="mt-2 flex items-center justify-between">
+                <p class="text-md font-bold text-gray-500">
+                  Shop: {{ product.shopName }}
+                </p>
+                <p class="text-md font-bold text-gray-500">
+                  Category: {{ product.categoryName }}
+                </p>
+              </div>
             </div>
 
             <div>
@@ -90,7 +91,7 @@
                   v-for="rating in [0, 1, 2, 3, 4]"
                   :key="rating"
                   :class="[
-                    reviews.average > rating
+                    averageRatings > rating
                       ? 'text-yellow-400'
                       : 'text-gray-300',
                     'h-5 w-5 flex-shrink-0',
@@ -99,16 +100,15 @@
                 />
                 <div class="mx-2 flex items-center">
                   <p class="font-medium text-gray-500">
-                    {{ reviews.average }} out of 5 stars
+                    {{ averageRatings }} out of 5 stars
                   </p>
-                  <a
-                    href="#reviews"
+                  <p
                     class="ml-1 font-medium text-indigo-600 hover:text-indigo-500"
-                    >({{ reviews.featured.length }} reviews)</a
                   >
+                    ({{ reviewLengths }} reviews)
+                  </p>
                 </div>
               </div>
-              <p class="sr-only">{{ reviews.average }} out of 5 stars</p>
             </div>
           </div>
 
@@ -228,89 +228,56 @@
           class="mx-auto mt-16 w-full max-w-2xl lg:col-span-4 lg:mt-0 lg:max-w-none"
         >
           <h3 class="my-4 text-sm font-medium text-gray-700">Write a review</h3>
-          <ProductReview
-            :product-id="
-              Array.isArray($route.params.id)
-                ? $route.params.id[0]
-                : $route.params.id
-            "
+          <ProductReview :product-id="product.id" />
+          <ProductReviews
+            :product-id="product.id"
+            @update-reviews="handleReviewsUpdate"
           />
-
-          <div class="border-b border-gray-200">
-            <h3 class="my-4 text-sm font-medium text-gray-700">User review</h3>
-          </div>
-          <div class="-mb-10">
-            <h3 class="sr-only">Customer Reviews</h3>
-            <div
-              v-for="(review, reviewIdx) in reviews.featured"
-              :key="review.id"
-              class="flex space-x-4 text-sm text-gray-500"
-            >
-              <div class="flex-none py-10">
-                <img
-                  :src="review.avatarSrc"
-                  alt=""
-                  class="h-10 w-10 rounded-full bg-gray-100"
-                >
-              </div>
-              <div
-                :class="[
-                  reviewIdx === 0 ? '' : 'border-t border-gray-200',
-                  'py-10',
-                ]"
-              >
-                <h3 class="font-medium text-gray-900">
-                  {{ review.author }}
-                </h3>
-                <p>
-                  <time :datetime="review.datetime">{{ review.date }}</time>
-                </p>
-
-                <div class="mt-4 flex items-center">
-                  <StarIcon
-                    v-for="rating in [0, 1, 2, 3, 4]"
-                    :key="rating"
-                    :class="[
-                      review.rating > rating
-                        ? 'text-yellow-400'
-                        : 'text-gray-300',
-                      'h-5 w-5 flex-shrink-0',
-                    ]"
-                    aria-hidden="true"
-                  />
-                </div>
-                <p class="sr-only">{{ review.rating }} out of 5 stars</p>
-
-                <p class="prose prose-sm mt-4 max-w-none text-gray-500">
-                  {{ review.content }}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+    </div>
+    <div v-else class="flex h-screen items-center justify-center bg-white">
+      Loading...
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { StarIcon } from "@heroicons/vue/20/solid";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
+import { StarIcon } from "@heroicons/vue/20/solid";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb.vue";
 import { useCartStore } from "@/stores/cart";
 import { useUserStore } from "@/stores/user";
 import { loadStripe } from "@stripe/stripe-js";
 import ProductReview from "~/components/ProductReview.vue";
+import { useRoute } from "vue-router";
 import type { CartItem } from "~/stores/cart";
 import type { Product } from "@prisma/client";
+import ProductReviews from "~/components/ProductReviews.vue";
 
-// const product = ref(null)
-const quantity = ref(1);
+const route = useRoute();
 
 const config = useRuntimeConfig();
 const stripePromise = loadStripe(
   config.public.STRIPE_PUBLISHABLE_KEY as string,
 );
+
+const quantity = ref(1);
+const product = ref<Product | null>(null);
+
+const reviewLengths = ref(0);
+const averageRatings = ref(0.0);
+
+const handleReviewsUpdate = ({
+  reviewLength,
+  averageRating,
+}: {
+  reviewLength: number;
+  averageRating: number;
+}) => {
+  reviewLengths.value = reviewLength;
+  averageRatings.value = averageRating;
+};
 
 const toast = useToast();
 
@@ -318,8 +285,27 @@ const cartStore = useCartStore();
 const userStore = useUserStore();
 const user = computed(() => userStore.user);
 
-onMounted(() => {
+onMounted(async () => {
   userStore.initializeUser();
+  try {
+    const productId = Array.isArray(route.params.id)
+      ? route.params.id[0]
+      : route.params.id;
+
+    const data = await $fetch<Product>(`/api/products/${productId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (data) {
+      product.value = data;
+    } else {
+      console.error("No product found");
+    }
+  } catch (error) {
+    console.error("Error fetching product:", error);
+  }
 });
 
 const handlePayment = async (product: CartItem) => {
@@ -379,59 +365,5 @@ const addToCartHandler = (product: Product) => {
     description: "Product added to cart",
     color: "success",
   });
-};
-
-const product = {
-  id: "1",
-  createdAt: null,
-  updatedAt: null,
-  title: "Application UI Icon Pack",
-  images: [
-    "https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg",
-    "https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg",
-    "https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg",
-    "https://i.ibb.co.com/DLNnXjT/r5-500x500.jpg",
-  ],
-  price: 220,
-  stock: 100,
-  description:
-    "The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.",
-  highlights: [
-    "200+ SVG icons in 3 unique styles",
-    "Compatible with Figma, Sketch, and Adobe XD",
-    "Drawn on 24 x 24 pixel grid",
-  ],
-  tags: ["Icons", "SVG", "Figma", "Sketch", "Playful"],
-  categoryName: "Home Decoration",
-  shopName: "Icon Store",
-};
-
-const reviews = {
-  average: 4,
-  featured: [
-    {
-      id: 1,
-      rating: 5,
-      content:
-        "This icon pack is just what I need for my latest project. There's an icon for just about anything I could ever need. Love the playful look!",
-      date: "July 16, 2021",
-      datetime: "2021-07-16",
-      author: "Emily Selman",
-      avatarSrc:
-        "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-    },
-    {
-      id: 2,
-      rating: 5,
-      content:
-        "Blown away by how polished this icon pack is. Everything looks so consistent and each SVG is optimized out of the box so I can use it directly with confidence. It would take me several hours to create a single icon this good, so it's a steal at this price.",
-      date: "July 12, 2021",
-      datetime: "2021-07-12",
-      author: "Hector Gibbons",
-      avatarSrc:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-    },
-    // More reviews...
-  ],
 };
 </script>

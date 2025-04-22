@@ -4,36 +4,35 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
-    const { title, categoryName, shopName } = query as Product;
+    const { title, categoryName, shopName } = query as Partial<Product>;
+    let products;
     if (title) {
-      const products = await prisma.product.findMany({
+      products = await prisma.product.findMany({
         where: {
           title: {
             contains: title,
           },
         },
       });
-      return products;
     } else if (categoryName) {
-      const products = await prisma.product.findMany({
+      products = await prisma.product.findMany({
         where: {
           categoryName: {
             contains: categoryName,
           },
         },
       });
-      return products;
     } else if (shopName) {
-      const products = await prisma.product.findMany({
+      products = await prisma.product.findMany({
         where: {
           shopName: {
             contains: shopName,
           },
         },
       });
-      return products;
+    } else {
+      products = await prisma.product.findMany();
     }
-    const products = await prisma.product.findMany();
     return products;
   } catch (error) {
     console.error("Error fetching products:", error);

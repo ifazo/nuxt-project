@@ -8,6 +8,10 @@ export default defineEventHandler(async (event) => {
         id: id,
       },
     });
+    if (!product) {
+      setResponseStatus(event, 404);
+      return { error: "Product not found" };
+    }
     return product;
   } catch (error) {
     console.error("Error fetching product:", error);
