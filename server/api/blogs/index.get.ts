@@ -4,11 +4,25 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
-    const { title, userEmail } = query as Partial<Blog>;
+    const { title, userEmail, random } = query as Partial<Blog> & {
+      random?: number;
+    };
 
     let blogs;
 
-    if (title) {
+    if (random) {
+      const allBlogs = await prisma.blog.findMany({
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
+      blogs = allBlogs.sort(() => Math.random() - 0.5).slice(0, random);
+    } else if (title) {
       blogs = await prisma.blog.findMany({
         where: {
           title: {

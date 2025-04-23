@@ -3,7 +3,8 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params as { id: string };
-    if (!id) {
+    const body = await readBody(event);
+    if (!id || !body) {
       setResponseStatus(event, 400);
       return { error: "Bad Request" };
     }
@@ -12,36 +13,28 @@ export default defineEventHandler(async (event) => {
       setResponseStatus(event, 400);
       return { error: "User email is required in header as 'user-email'" };
     }
-    const shop = await prisma.shop.findUnique({
-      where: {
-        userEmail,
-      },
-    });
-    if (!shop) {
-      setResponseStatus(event, 404);
-      return { error: "You are not the shop owner" };
-    }
-    const product = await prisma.product.findUnique({
+    const review = await prisma.productReview.findUnique({
       where: {
         id,
       },
     });
-    if (!product) {
+    if (!review) {
       setResponseStatus(event, 404);
-      return { error: "Product not found" };
+      return { error: "Review not found" };
     }
-    if (product?.shopName !== shop.name) {
+    if (review?.userEmail !== userEmail) {
       setResponseStatus(event, 403);
-      return { error: "You are not allowed to update this product" };
+      return { error: "You are not allowed to update this review" };
     }
-    const deletedProduct = await prisma.product.delete({
+    const updatedReview = await prisma.productReview.update({
       where: {
         id,
       },
+      data: body,
     });
-    return deletedProduct;
+    return updatedReview;
   } catch (error) {
-    console.error("Error deleting product:", error);
+    console.error("Error updating review:", error);
     setResponseStatus(event, 500);
     return { error: "Internal Server Error" };
   }

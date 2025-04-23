@@ -4,9 +4,13 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
-    const { title, categoryName, shopName } = query as Partial<Product>;
+    const { title, categoryName, shopName, random } =
+      query as Partial<Product> & { random?: number };
     let products;
-    if (title) {
+    if (random) {
+      const allProducts = await prisma.product.findMany();
+      products = allProducts.sort(() => Math.random() - 0.5).slice(0, random);
+    } else if (title) {
       products = await prisma.product.findMany({
         where: {
           title: {

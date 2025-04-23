@@ -13,22 +13,18 @@ export default defineEventHandler(async (event) => {
         email: userEmail,
       },
     });
-    if (!user) {
+    if (!user || user.role !== "SELLER") {
       setResponseStatus(event, 404);
-      return { error: "User not found" };
-    }
-    if (user.role !== "SELLER") {
-      setResponseStatus(event, 403);
-      return { error: "Only seller can create product" };
+      return { error: "User not found or not a seller" };
     }
     const shop = await prisma.shop.findUnique({
       where: {
         userEmail: user.email,
       },
     });
-    if (!shop) {
+    if (!shop || shop.userEmail !== userEmail) {
       setResponseStatus(event, 404);
-      return { error: "Shop not found" };
+      return { error: "Shop not found or you are not the owner" };
     }
     const product = await prisma.product.create({
       data: {

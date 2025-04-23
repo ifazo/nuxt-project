@@ -16,7 +16,7 @@
           <label for="comment" class="sr-only">Add your comment</label>
           <textarea
             id="comment"
-            v-model="comment"
+            v-model="form.comment"
             rows="3"
             name="comment"
             required
@@ -38,7 +38,9 @@
               <template v-for="star in 5" :key="star">
                 <button
                   type="button"
-                  :class="star <= rating ? 'text-yellow-400' : 'text-gray-300'"
+                  :class="
+                    star <= form.rating ? 'text-yellow-400' : 'text-gray-300'
+                  "
                   class="h-6 w-6"
                   required
                   @click="setRating(star)"
@@ -94,11 +96,16 @@ onMounted(() => {
   userStore.initializeUser();
 });
 
-const rating = ref(0);
-const comment = ref("");
+const form = ref({
+  rating: 0,
+  comment: "",
+});
+
+// const rating = ref(0);
+// const comment = ref("");
 
 const setRating = (value: number) => {
-  rating.value = value;
+  form.value.rating = value;
 };
 
 const submitReview = async () => {
@@ -114,12 +121,12 @@ const submitReview = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "user-email": user.value.email,
+      "product-id": props.productId,
     },
     body: JSON.stringify({
-      rating: rating.value,
-      comment: comment.value,
-      productId: props.productId,
-      userEmail: user.value.email,
+      rating: form.value.rating,
+      comment: form.value.comment,
     }),
   });
   // console.log("blog review response:", response);
@@ -136,8 +143,7 @@ const submitReview = async () => {
       color: "success",
     });
   }
-
-  rating.value = 0;
-  comment.value = "";
+  form.value.rating = 0;
+  form.value.comment = "";
 };
 </script>
