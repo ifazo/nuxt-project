@@ -7,18 +7,14 @@ export default defineEventHandler(async (event) => {
       setResponseStatus(event, 400);
       return { error: "Bad Request" };
     }
-    const product = await prisma.product.findUnique({
+    const shop = await prisma.shop.delete({
       where: {
-        id: id,
+        id,
       },
     });
-    if (!product) {
-      setResponseStatus(event, 404);
-      return { error: "Product not found" };
-    }
-    return product;
+    return shop;
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error deleting shop:", error);
     setResponseStatus(event, 500);
     return { error: "Internal Server Error" };
   }

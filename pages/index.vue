@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-10 sm:px-6 lg:px-8"
+      class="mx-auto flex w-full max-w-7xl items-start gap-x-8 px-4 py-8 sm:px-6 lg:px-8"
     >
       <aside class="sticky top-8 hidden w-45 shrink-0 lg:block">
         <!-- Left column area -->
@@ -73,11 +73,15 @@
         </div>
       </aside>
     </div>
+    <FeaturedCategory />
+    <FeaturedShop />
   </div>
 </template>
 
 <script setup lang="ts">
 import AppFeature from "~/components/AppFeature.vue";
+import FeaturedCategory from "~/components/FeaturedCategory.vue";
+import FeaturedShop from "~/components/FeaturedShop.vue";
 
 const blogs = [
   {

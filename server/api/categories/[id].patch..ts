@@ -7,18 +7,25 @@ export default defineEventHandler(async (event) => {
       setResponseStatus(event, 400);
       return { error: "Bad Request" };
     }
-    const product = await prisma.product.findUnique({
+    const body = await readBody(event);
+    const category = await prisma.category.findUnique({
       where: {
         id: id,
       },
     });
-    if (!product) {
+    if (!category) {
       setResponseStatus(event, 404);
-      return { error: "Product not found" };
+      return { error: "Category not found" };
     }
-    return product;
+    const updatedCategory = await prisma.category.update({
+      where: {
+        id: id,
+      },
+      data: body,
+    });
+    return updatedCategory;
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error deleting category:", error);
     setResponseStatus(event, 500);
     return { error: "Internal Server Error" };
   }

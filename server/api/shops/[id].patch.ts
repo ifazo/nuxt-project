@@ -7,18 +7,25 @@ export default defineEventHandler(async (event) => {
       setResponseStatus(event, 400);
       return { error: "Bad Request" };
     }
-    const product = await prisma.product.findUnique({
+    const body = await readBody(event);
+    const shop = await prisma.shop.findUnique({
       where: {
         id: id,
       },
     });
-    if (!product) {
+    if (!shop) {
       setResponseStatus(event, 404);
-      return { error: "Product not found" };
+      return { error: "Shop not found" };
     }
-    return product;
+    const updatedShop = await prisma.shop.update({
+      where: {
+        id: id,
+      },
+      data: body,
+    });
+    return updatedShop;
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error updating shop:", error);
     setResponseStatus(event, 500);
     return { error: "Internal Server Error" };
   }
