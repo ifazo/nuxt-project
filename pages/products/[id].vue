@@ -292,12 +292,7 @@ onMounted(async () => {
       ? route.params.id[0]
       : route.params.id;
 
-    const data = await $fetch<Product>(`/api/products/${productId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const data = await $fetch<Product>(`/api/products/${productId}`);
     if (data) {
       product.value = data;
     } else {
