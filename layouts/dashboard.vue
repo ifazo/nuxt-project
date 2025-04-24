@@ -288,9 +288,11 @@ import {
 } from "@heroicons/vue/24/outline";
 import { signOut } from "~/lib/firebase";
 import { useUserStore } from "@/stores/user";
+import { useRoute } from "vue-router";
 
 const sidebarOpen = ref(false);
 
+const route = useRoute();
 const toast = useToast();
 
 const userStore = useUserStore();
@@ -362,12 +364,23 @@ const adminNavigation = [
 ];
 
 const navigation = computed(() => {
+  const currentPath = route.path;
+
   if (user.value?.role === "BUYER") {
-    return buyerNavigation;
+    return buyerNavigation.map((item) => ({
+      ...item,
+      current: item.href === currentPath,
+    }));
   } else if (user.value?.role === "SELLER") {
-    return sellerNavigation;
+    return sellerNavigation.map((item) => ({
+      ...item,
+      current: item.href === currentPath,
+    }));
   } else if (user.value?.role === "ADMIN") {
-    return adminNavigation;
+    return adminNavigation.map((item) => ({
+      ...item,
+      current: item.href === currentPath,
+    }));
   }
   return [];
 });
@@ -375,7 +388,6 @@ const navigation = computed(() => {
 const handleSignOut = () => {
   signOut()
     .then(() => {
-      // user.value = null;
       userStore.removeUser();
       toast.add({
         title: "Success",

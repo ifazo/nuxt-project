@@ -80,10 +80,11 @@
           </div>
         </div>
       </div>
-      <div
+      <div class="prose prose-sm mt-4 max-w-none text-gray-600" v-html="blog.content" />
+      <!-- <div
         class="mt-8 text-base leading-7 text-gray-600"
         v-html="blog.content"
-      />
+      /> -->
     </div>
     <div v-else class="flex h-screen items-center justify-center bg-white">
       Loading...

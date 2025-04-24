@@ -1,16 +1,34 @@
 import prisma from "~/prisma";
 
 export default defineEventHandler(async (event) => {
-  const { id } = event.context.params as { id: string };
-  const body = await readBody(event);
   try {
-    const blog = await prisma.blog.update({
+    const { id } = event.context.params as { id: string };
+    const body = await readBody(event);
+    if (!id || !body) {
+      setResponseStatus(event, 400);
+      return { error: "Bad Request" };
+    }
+    const userEmail = event.req.headers["user-email"] as string;
+    if (!userEmail) {
+      setResponseStatus(event, 400);
+      return { error: "User email is required in header as 'user-email'" };
+    }
+    const blog = await prisma.blog.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!blog || blog.userEmail !== userEmail) {
+      setResponseStatus(event, 404);
+      return { error: "You are not the blog owner" };
+    }
+    const updatedBlog = await prisma.blog.update({
       where: {
         id: id,
       },
       data: body,
     });
-    return blog;
+    return updatedBlog;
   } catch (error) {
     console.error("Error updating blog:", error);
     setResponseStatus(event, 500);

@@ -3,19 +3,24 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params as { id: string };
-    if (!id) {
+    const body = await readBody(event);
+    if (!id || !body) {
       setResponseStatus(event, 400);
       return { error: "Bad Request" };
     }
-    const body = await readBody(event);
-    const category = await prisma.category.findUnique({
+    const userEmail = event.req.headers["user-email"] as string;
+    if (!userEmail) {
+      setResponseStatus(event, 400);
+      return { error: "User email is required in header as 'user-email'" };
+    }
+    const user = await prisma.user.findUnique({
       where: {
-        id: id,
+        email: userEmail,
       },
     });
-    if (!category) {
+    if (!user || user.role !== "ADMIN") {
       setResponseStatus(event, 404);
-      return { error: "Category not found" };
+      return { error: "User not found or not authorized" };
     }
     const updatedCategory = await prisma.category.update({
       where: {

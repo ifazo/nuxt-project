@@ -250,12 +250,12 @@ const handleSubmit = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "user-email": userStore.user.email,
       },
       body: JSON.stringify({
         logo: logoUrl,
         name: form.value.name,
         details: form.value.details,
-        userEmail: userStore.user.email,
       }),
     });
     console.log("Shop response:", response);

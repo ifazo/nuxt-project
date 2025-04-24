@@ -3,19 +3,24 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const { id } = event.context.params as { id: string };
-    if (!id) {
+    const body = await readBody(event);
+    if (!id || !body) {
       setResponseStatus(event, 400);
       return { error: "Bad Request" };
     }
-    const body = await readBody(event);
+    const userEmail = event.req.headers["user-email"] as string;
+    if (!userEmail) {
+      setResponseStatus(event, 400);
+      return { error: "User email is required in header as 'user-email'" };
+    }
     const shop = await prisma.shop.findUnique({
       where: {
-        id: id,
+        userEmail,
       },
     });
-    if (!shop) {
+    if (!shop || shop.userEmail !== userEmail) {
       setResponseStatus(event, 404);
-      return { error: "Shop not found" };
+      return { error: "You are not the shop owner" };
     }
     const updatedShop = await prisma.shop.update({
       where: {

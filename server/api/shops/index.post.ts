@@ -1,24 +1,29 @@
 import prisma from "~/prisma";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
   try {
-    const { userEmail } = body;
+    const body = await readBody(event);
+    const userEmail = event.req.headers["user-email"] as string;
+    if (!userEmail) {
+      setResponseStatus(event, 400);
+      return {
+        error: "userEmail is required in header as 'user-email'",
+      };
+    }
     const user = await prisma.user.findUnique({
       where: {
         email: userEmail,
       },
     });
-    if (!user) {
+    if (!user || user.role !== "SELLER") {
       setResponseStatus(event, 404);
-      return { error: "User not found" };
-    }
-    if (user.role !== "SELLER") {
-      setResponseStatus(event, 403);
-      return { error: "Only seller can create shop" };
+      return { error: "User not found or not a seller" };
     }
     const shop = await prisma.shop.create({
-      data: body,
+      data: {
+        ...body,
+        userEmail,
+      },
     });
     return shop;
   } catch (error) {
