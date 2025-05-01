@@ -97,18 +97,18 @@
                         </div>
                         <div>
                           <p
-                            id="mobile-categories-heading"
+                            id="mobile-blog-heading"
                             class="font-medium text-gray-900"
                           >
-                            Categories
+                            Blogs
                           </p>
                           <ul
                             role="list"
-                            aria-labelledby="mobile-categories-heading"
+                            aria-labelledby="mobile-blog-heading"
                             class="mt-6 space-y-6"
                           >
                             <li
-                              v-for="item in category.categories"
+                              v-for="item in category.blogs"
                               :key="item.name"
                               class="flex"
                             >
@@ -124,18 +124,18 @@
                       <div class="grid grid-cols-1 gap-x-6 gap-y-10">
                         <div>
                           <p
-                            id="mobile-collection-heading"
+                            id="mobile-product-heading"
                             class="font-medium text-gray-900"
                           >
-                            Collection
+                            Products
                           </p>
                           <ul
                             role="list"
-                            aria-labelledby="mobile-collection-heading"
+                            aria-labelledby="mobile-product-heading"
                             class="mt-6 space-y-6"
                           >
                             <li
-                              v-for="item in category.collection"
+                              v-for="item in category.products"
                               :key="item.name"
                               class="flex"
                             >
@@ -150,18 +150,18 @@
 
                         <div>
                           <p
-                            id="mobile-brand-heading"
+                            id="mobile-shop-heading"
                             class="font-medium text-gray-900"
                           >
-                            Brands
+                            Shops
                           </p>
                           <ul
                             role="list"
-                            aria-labelledby="mobile-brand-heading"
+                            aria-labelledby="mobile-shop-heading"
                             class="mt-6 space-y-6"
                           >
                             <li
-                              v-for="item in category.brands"
+                              v-for="item in category.shops"
                               :key="item.name"
                               class="flex"
                             >
@@ -289,18 +289,18 @@
                                   </div>
                                   <div>
                                     <p
-                                      id="desktop-categories-heading"
+                                      id="desktop-blog-heading"
                                       class="font-medium text-gray-900"
                                     >
-                                      Categories
+                                      Blogs
                                     </p>
                                     <ul
                                       role="list"
-                                      aria-labelledby="desktop-categories-heading"
+                                      aria-labelledby="desktop-blog-heading"
                                       class="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                     >
                                       <li
-                                        v-for="item in category.categories"
+                                        v-for="item in category.blogs"
                                         :key="item.name"
                                         class="flex"
                                       >
@@ -316,18 +316,18 @@
                                 <div class="grid grid-cols-2 gap-x-8 gap-y-10">
                                   <div>
                                     <p
-                                      id="desktop-collection-heading"
+                                      id="desktop-product-heading"
                                       class="font-medium text-gray-900"
                                     >
-                                      Collection
+                                      Products
                                     </p>
                                     <ul
                                       role="list"
-                                      aria-labelledby="desktop-collection-heading"
+                                      aria-labelledby="desktop-product-heading"
                                       class="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                     >
                                       <li
-                                        v-for="item in category.collection"
+                                        v-for="item in category.products"
                                         :key="item.name"
                                         class="flex"
                                       >
@@ -342,18 +342,18 @@
 
                                   <div>
                                     <p
-                                      id="desktop-brand-heading"
+                                      id="desktop-shop-heading"
                                       class="font-medium text-gray-900"
                                     >
-                                      Brands
+                                      Shops
                                     </p>
                                     <ul
                                       role="list"
-                                      aria-labelledby="desktop-brand-heading"
+                                      aria-labelledby="desktop-shop-heading"
                                       class="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                     >
                                       <li
-                                        v-for="item in category.brands"
+                                        v-for="item in category.shops"
                                         :key="item.name"
                                         class="flex"
                                       >
@@ -499,57 +499,30 @@ import CartModal from "~/components/CartModal.vue";
 const navigation = {
   categories: [
     {
-      name: "Women",
+      name: "Categories",
       featured: [
-        { name: "Newest", href: "#" },
-        { name: "Popular", href: "#" },
-        { name: "Best Sellers", href: "#" },
         { name: "Trending", href: "#" },
+        { name: "Popular", href: "#" },
+        { name: "Newest", href: "#" },
+        { name: "Oldest", href: "#" },
       ],
-      collection: [
+      products: [
         { name: "Everything", href: "#" },
-        { name: "Core", href: "#" },
         { name: "New Arrivals", href: "#" },
-        { name: "Sale", href: "#" },
+        { name: "On Sale", href: "#" },
+        { name: "Best Selling", href: "#" },
       ],
-      categories: [
-        { name: "Basic Tees", href: "#" },
-        { name: "Artwork Tees", href: "#" },
-        { name: "Bottoms", href: "#" },
-        { name: "Accessories", href: "#" },
+      blogs: [
+        { name: "Recent", href: "#" },
+        { name: "Most view", href: "#" },
+        { name: "Popular", href: "#" },
+        { name: "Oldest", href: "#" },
       ],
-      brands: [
-        { name: "Full Nelson", href: "#" },
-        { name: "My Way", href: "#" },
-        { name: "Re-Arranged", href: "#" },
-        { name: "Counterfeit", href: "#" },
-      ],
-    },
-    {
-      name: "Men",
-      featured: [
-        { name: "Casual", href: "#" },
-        { name: "Boxers", href: "#" },
-        { name: "Outdoor", href: "#" },
-        { name: "Formal", href: "#" },
-      ],
-      collection: [
-        { name: "Everything", href: "#" },
-        { name: "Core", href: "#" },
-        { name: "New Arrivals", href: "#" },
-        { name: "Sale", href: "#" },
-      ],
-      categories: [
-        { name: "Artwork Tees", href: "#" },
-        { name: "Pants", href: "#" },
-        { name: "Accessories", href: "#" },
-        { name: "Boxers", href: "#" },
-      ],
-      brands: [
-        { name: "My Way", href: "#" },
-        { name: "Counterfeit", href: "#" },
-        { name: "Re-Arranged", href: "#" },
-        { name: "Full Nelson", href: "#" },
+      shops: [
+        { name: "Verified", href: "#" },
+        { name: "Top Rated", href: "#" },
+        { name: "Most Popular", href: "#" },
+        { name: "New Opening", href: "#" },
       ],
     },
   ],

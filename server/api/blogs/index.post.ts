@@ -7,8 +7,7 @@ export default defineEventHandler(async (event) => {
     if (!userEmail) {
       setResponseStatus(event, 400);
       return {
-        error:
-          "userEmail is required in header as 'user-email'",
+        error: "userEmail is required in header as 'user-email'",
       };
     }
     const blog = await prisma.blog.create({

@@ -27,11 +27,7 @@ export default defineEventHandler(async (event) => {
         },
       });
     }
-
-    return categories.map((category) => ({
-      ...category,
-      productCount: category._count.products,
-    }));
+    return categories;
   } catch (error) {
     console.error("Error fetching categories:", error);
     setResponseStatus(event, 500);

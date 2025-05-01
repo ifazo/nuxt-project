@@ -1,21 +1,7 @@
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
--->
 <template>
   <div>
     <div
-      v-if="shops.length > 0"
+      v-if="shops.length"
       class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
     >
       <div class="flex items-center justify-between space-x-4">
@@ -40,16 +26,6 @@
               alt=""
               class="h-48 w-full object-cover object-center group-hover:opacity-75"
             >
-            <!-- <div
-              class="flex items-end p-4 opacity-0 group-hover:opacity-100"
-              aria-hidden="true"
-            >
-              <div
-                class="bg-opacity-75 w-full rounded-md bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter"
-              >
-                Visit Shop
-              </div>
-            </div> -->
           </div>
           <div
             class="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900"
@@ -68,16 +44,45 @@
             </p>
           </div>
           <p class="mt-1 text-sm font-medium text-gray-500">
-            {{ shop.productCount }} Products
+            {{ shop._count.products }} Products
           </p>
         </div>
       </div>
     </div>
+    <!-- Skeleton Loader -->
     <div
       v-else
       class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
     >
-      <p class="text-sm text-gray-500">Shops are loading, please wait...</p>
+      <!-- Skeleton Header -->
+      <div class="flex items-center justify-between space-x-4">
+        <div class="h-7 w-32 animate-pulse rounded bg-gray-200" />
+        <div class="h-5 w-20 animate-pulse rounded bg-gray-200" />
+      </div>
+
+      <!-- Skeleton Grid -->
+      <div
+        class="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+      >
+        <!-- Repeat skeleton items -->
+        <div v-for="i in 4" :key="i" class="group relative">
+          <!-- Skeleton Image -->
+          <div
+            class="aspect-h-3 aspect-w-4 animate-pulse overflow-hidden rounded-lg bg-gray-200"
+          >
+            <div class="h-48 w-full" />
+          </div>
+
+          <!-- Skeleton Title and Link -->
+          <div class="mt-4 flex items-center justify-between space-x-8">
+            <div class="h-5 w-24 animate-pulse rounded bg-gray-200" />
+            <div class="h-5 w-20 animate-pulse rounded bg-gray-200" />
+          </div>
+
+          <!-- Skeleton Product Count -->
+          <div class="mt-1 h-4 w-28 animate-pulse rounded bg-gray-200" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -86,7 +91,9 @@
 import type { Shop } from "@prisma/client";
 
 type EShop = Shop & {
-  productCount: number;
+  _count: {
+    products: number;
+  };
 };
 
 const shops = ref<EShop[]>([]);

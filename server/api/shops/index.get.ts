@@ -3,7 +3,10 @@ import prisma from "~/prisma";
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
-    const { random } = query as { random?: number };
+    const { random, userEmail } = query as {
+      random?: number;
+      userEmail?: string;
+    };
 
     let shops;
 
@@ -16,6 +19,15 @@ export default defineEventHandler(async (event) => {
         },
       });
       shops = allShops.sort(() => Math.random() - 0.5).slice(0, random);
+    } else if (userEmail) {
+      shops = await prisma.shop.findFirst({
+        where: { user: { email: userEmail } },
+        include: {
+          _count: {
+            select: { products: true },
+          },
+        },
+      });
     } else {
       shops = await prisma.shop.findMany({
         include: {
@@ -25,10 +37,7 @@ export default defineEventHandler(async (event) => {
         },
       });
     }
-    return shops.map((shop) => ({
-      ...shop,
-      productCount: shop._count.products,
-    }));
+    return shops;
   } catch (error) {
     console.error("Error fetching shops:", error);
     setResponseStatus(event, 500);

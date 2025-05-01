@@ -96,9 +96,10 @@
               </nav>
             </div>
             <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <NuxtLink
-                to="/dashboard/profile"
+              <button
+                type="button"
                 class="group block flex-shrink-0"
+                @click="open = true; sidebarOpen = false"
               >
                 <div class="flex items-center">
                   <div v-if="user.image">
@@ -126,7 +127,8 @@
                     </p>
                   </div>
                 </div>
-              </NuxtLink>
+              </button>
+              <!-- <ProfileModal v-model:open="open" /> -->
               <button
                 type="button"
                 class="ml-auto flex h-10 w-10 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
@@ -192,10 +194,7 @@
           </nav>
         </div>
         <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
-          <NuxtLink
-            to="/dashboard/profile"
-            class="group block w-full flex-shrink-0"
-          >
+          <button class="group block w-full flex-shrink-0" @click="open = true">
             <div class="flex items-center">
               <div v-if="user.image">
                 <img
@@ -220,7 +219,8 @@
                 </p>
               </div>
             </div>
-          </NuxtLink>
+          </button>
+          <ProfileModal v-model:open="open" />
           <button
             type="button"
             class="ml-auto flex h-8 w-8 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
@@ -287,10 +287,11 @@ import {
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/vue/24/outline";
 import { signOut } from "~/lib/firebase";
-import { useUserStore } from "@/stores/user";
+import ProfileModal from "~/components/ProfileModal.vue";
 import { useRoute } from "vue-router";
 
 const sidebarOpen = ref(false);
+const open = ref(false);
 
 const route = useRoute();
 const toast = useToast();
@@ -305,8 +306,8 @@ onMounted(() => {
 const buyerNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   {
-    name: "Blogs",
-    href: "/dashboard/blogs",
+    name: "Wishlist",
+    href: "/dashboard/wishlists",
     icon: UsersIcon,
     current: false,
   },
@@ -314,12 +315,6 @@ const buyerNavigation = [
     name: "Orders",
     href: "/dashboard/orders",
     icon: ChartBarIcon,
-    current: false,
-  },
-  {
-    name: "Profile",
-    href: "/dashboard/profile",
-    icon: InboxIcon,
     current: false,
   },
 ];
@@ -333,12 +328,6 @@ const sellerNavigation = [
     current: false,
   },
   { name: "Shops", href: "/dashboard/shops", icon: InboxIcon, current: false },
-  {
-    name: "Profile",
-    href: "/dashboard/profile",
-    icon: InboxIcon,
-    current: false,
-  },
 ];
 
 const adminNavigation = [
@@ -353,12 +342,6 @@ const adminNavigation = [
     name: "Categories",
     href: "/dashboard/categories",
     icon: CalendarIcon,
-    current: false,
-  },
-  {
-    name: "Profile",
-    href: "/dashboard/profile",
-    icon: InboxIcon,
     current: false,
   },
 ];
@@ -404,4 +387,8 @@ const handleSignOut = () => {
       });
     });
 };
+
+definePageMeta({
+  middleware: "auth",
+});
 </script>
