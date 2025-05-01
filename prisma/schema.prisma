@@ -27,6 +27,7 @@ model User {
   blogs          Blog[]
   shop           Shop?
   productReviews ProductReview[]
+  blogReviews    BlogReview[]
 
   @@map("users")
 }
@@ -93,18 +94,33 @@ model ProductReview {
 }
 
 model Blog {
-  id          String    @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String
   content     String
   image       String
   tags        String[]
-  userEmail   String    @map("user")
-  user        User      @relation(fields: [userEmail], references: [email])
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @updatedAt
+  userEmail   String       @map("user")
+  user        User         @relation(fields: [userEmail], references: [email])
+  createdAt   DateTime?    @default(now())
+  updatedAt   DateTime?    @updatedAt
+  blogReviews BlogReview[]
 
   @@map("blogs")
+}
+
+model BlogReview {
+  id        String    @id @default(uuid())
+  rating    Int
+  comment   String
+  userEmail String    @map("user")
+  user      User      @relation(fields: [userEmail], references: [email])
+  blogId    String    @map("blog")
+  blog      Blog      @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("blog_reviews")
 }
 
 model Wishlist {

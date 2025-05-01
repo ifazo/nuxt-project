@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="border-b border-gray-200">
-      <h3 class="my-4 text-sm font-medium text-gray-700">Product reviews</h3>
+      <h3 class="my-4 text-sm font-medium text-gray-700">Blog reviews</h3>
     </div>
     <div v-if="reviews.length" class="-mb-10">
       <div
@@ -68,14 +68,14 @@
 <script setup lang="ts">
 import { StarIcon } from "@heroicons/vue/20/solid";
 import { UserCircleIcon } from "@heroicons/vue/24/outline";
-import type { ProductReview, User } from "@prisma/client";
+import type { BlogReview, User } from "@prisma/client";
 
-type Review = ProductReview & {
+type Review = BlogReview & {
   user: User;
 };
 
 const props = defineProps({
-  productId: {
+  blogId: {
     type: String,
     required: true,
   },
@@ -85,9 +85,7 @@ const reviews = ref<Review[]>([]);
 const emit = defineEmits(["update-reviews"]);
 
 onMounted(async () => {
-  const response = await fetch(
-    `/api/products/reviews?productId=${props.productId}`,
-  );
+  const response = await fetch(`/api/blogs/reviews?blogId=${props.blogId}`);
   if (response.ok) {
     reviews.value = await response.json();
     const reviewLength = reviews.value.length;

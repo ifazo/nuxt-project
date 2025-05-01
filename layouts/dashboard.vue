@@ -61,11 +61,11 @@
                 <NuxtLink to="/" class="flex items-center">
                   <img
                     class="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                    alt=""
+                    src="assets/images/logo.png"
+                    alt="logo"
                   >
                   <span class="ml-3 text-xl font-semibold text-gray-900">
-                    Nuxt Hub
+                    Nuxty
                   </span>
                 </NuxtLink>
               </div>
@@ -99,7 +99,10 @@
               <button
                 type="button"
                 class="group block flex-shrink-0"
-                @click="open = true; sidebarOpen = false"
+                @click="
+                  open = true;
+                  sidebarOpen = false;
+                "
               >
                 <div class="flex items-center">
                   <div v-if="user.image">
@@ -157,13 +160,9 @@
         <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
           <div class="flex flex-shrink-0 items-center px-4">
             <NuxtLink to="/" class="flex items-center">
-              <img
-                class="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                alt=""
-              >
+              <img class="h-8 w-auto" src="assets/images/logo.png" alt="logo" >
               <span class="ml-3 text-xl font-semibold text-gray-900">
-                Nuxt Hub
+                Nuxty
               </span>
             </NuxtLink>
           </div>

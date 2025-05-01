@@ -208,11 +208,11 @@
                 <NuxtLink to="/" class="flex items-center">
                   <img
                     class="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                    alt=""
+                    src="assets/images/logo.png"
+                    alt="logo"
                   >
                   <span class="ml-3 text-xl font-semibold text-gray-900">
-                    Nuxt Hub
+                    Nuxty
                   </span>
                 </NuxtLink>
               </div>
@@ -406,11 +406,11 @@
               <NuxtLink to="/" class="flex items-center lg:hidden">
                 <img
                   class="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                  alt=""
+                  src="assets/images/logo.png"
+                  alt="logo"
                 >
                 <span class="ml-3 text-xl font-semibold text-gray-900">
-                  Nuxt Hub
+                  Nuxty
                 </span>
               </NuxtLink>
 

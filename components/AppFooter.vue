@@ -7,14 +7,14 @@
     <div class="mx-auto max-w-7xl px-6 pt-8 pb-8 sm:pt-12 lg:px-8 lg:pt-16">
       <div class="xl:grid xl:grid-cols-3 xl:gap-8">
         <div class="space-y-8">
-          <img
-            class="h-7"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Company name"
-          >
+          <NuxtLink to="/" class="flex items-center">
+            <img class="h-7" src="assets/images/logo.png" alt="logo" >
+            <span class="ml-3 text-xl font-semibold text-gray-900">
+              Nuxty
+            </span>
+          </NuxtLink>
           <p class="text-sm leading-6 text-gray-600">
-            Making the world a better place through constructing elegant
-            hierarchies.
+            Nuxty is a online solution for your business.
           </p>
           <div class="flex space-x-6">
             <a
@@ -108,20 +108,16 @@ const navigation = {
     { name: "Marketing", href: "#" },
     { name: "Analytics", href: "#" },
     { name: "Commerce", href: "#" },
-    { name: "Insights", href: "#" },
   ],
   support: [
     { name: "Pricing", href: "#" },
     { name: "Documentation", href: "#" },
     { name: "Guides", href: "#" },
-    { name: "API Status", href: "#" },
   ],
   company: [
     { name: "About", href: "#" },
     { name: "Blog", href: "#" },
     { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
   ],
   legal: [
     { name: "Claim", href: "#" },

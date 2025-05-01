@@ -78,6 +78,16 @@
               >View all products <span aria-hidden="true">&rarr;</span>
             </NuxtLink>
           </div>
+          <div class="border-t border-gray-100 pt-4">
+            <h3 class="my-4 text-sm font-medium text-gray-700">
+              Write a review
+            </h3>
+            <BlogReview :blog-id="blog.id" />
+            <BlogReviews
+              :blog-id="blog.id"
+              @update-reviews="handleReviewsUpdate"
+            />
+          </div>
         </div>
       </div>
       <!-- <div
@@ -95,6 +105,8 @@
 import type { Blog, Product } from "@prisma/client";
 import { useRoute } from "vue-router";
 import DOMPurify from "dompurify";
+import BlogReview from "~/components/BlogReview.vue";
+import BlogReviews from "~/components/BlogReviews.vue";
 
 type IBlog = {
   blog: Blog;

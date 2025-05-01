@@ -27,14 +27,7 @@
     >
       <div class="mx-auto w-full max-w-sm lg:w-96">
         <div>
-          <img
-            class="h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Logo"
-          >
-          <h2
-            class="mt-8 text-2xl leading-9 font-bold tracking-tight text-gray-900"
-          >
+          <h2 class="text-2xl leading-9 font-bold tracking-tight text-gray-900">
             Sign up for new account
           </h2>
           <p class="mt-2 text-sm leading-6 font-medium text-gray-500">
@@ -48,7 +41,7 @@
           </p>
         </div>
 
-        <div class="mt-10">
+        <div class="mt-4">
           <div class="relative">
             <div class="absolute inset-0 flex items-center" aria-hidden="true">
               <div class="w-full border-t border-gray-200" />
