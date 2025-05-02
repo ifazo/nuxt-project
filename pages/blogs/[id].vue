@@ -22,6 +22,15 @@
             class="prose prose-sm mt-4 max-w-none text-gray-600"
             v-html="sanitizedContent"
           />
+          <div class="mt-4 flex flex-wrap gap-4">
+            <span
+              v-for="(tag, index) in blog.tags"
+              :key="index"
+              class="inline-flex items-center rounded-md bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 ring-1 ring-indigo-600/10 ring-inset"
+            >
+              {{ tag }}
+            </span>
+          </div>
         </div>
         <div class="w-full lg:max-w-md lg:flex-auto">
           <h3 class="pb-8 text-2xl leading-7 font-bold text-indigo-600">
@@ -116,8 +125,21 @@ type IBlog = {
 const route = useRoute();
 
 const blog = ref<Blog | null>(null);
-console.log("Blog:", blog);
 const products = ref<Product[]>([]);
+
+const reviewLengths = ref(0);
+const averageRatings = ref(0.0);
+
+const handleReviewsUpdate = ({
+  reviewLength,
+  averageRating,
+}: {
+  reviewLength: number;
+  averageRating: number;
+}) => {
+  reviewLengths.value = reviewLength;
+  averageRatings.value = averageRating;
+};
 
 const sanitizedContent = computed(() =>
   blog.value ? DOMPurify.sanitize(blog.value.content) : "",

@@ -219,7 +219,7 @@
               </div>
             </div>
           </button>
-          <ProfileModal v-model:open="open" />
+          <ProfileModal v-model:open="open" :user="user" />
           <button
             type="button"
             class="ml-auto flex h-8 w-8 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"

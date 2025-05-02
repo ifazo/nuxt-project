@@ -24,6 +24,7 @@
     </div>
     <FeaturedCategory />
     <FeaturedShop />
+    <AppIncentive />
   </div>
 </template>
 
@@ -33,4 +34,5 @@ import FeaturedBlog from "~/components/FeaturedBlog.vue";
 import FeaturedProduct from "~/components/FeaturedProduct.vue";
 import FeaturedCategory from "~/components/FeaturedCategory.vue";
 import FeaturedShop from "~/components/FeaturedShop.vue";
+import AppIncentive from "~/components/AppIncentive.vue";
 </script>

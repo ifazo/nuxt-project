@@ -527,6 +527,7 @@ const navigation = {
     },
   ],
   pages: [
+    { name: "Shops", href: "/shops" },
     { name: "Products", href: "/products" },
     { name: "Blogs", href: "/blogs" },
     { name: "Dashboard", href: "/dashboard" },

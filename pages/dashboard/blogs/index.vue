@@ -1,97 +1,86 @@
 <template>
-  <div class="bg-white py-12 sm:py-16">
+  <div class="bg-white py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl text-center">
+      <div class="mx-auto max-w-2xl">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Your blogs
+          From the blog
         </h2>
         <p class="mt-2 text-lg leading-8 text-gray-600">
-          All your blogs in one place.
+          Learn how to grow your business with our expert advice.
         </p>
-        <p class="mt-2 text-base leading-7 text-gray-600">
-          <NuxtLink
-            href="/dashboard/blogs/add"
-            class="text-sm leading-6 font-semibold text-gray-900"
-          >
-            Add a new blog <span aria-hidden="true">→</span>
-          </NuxtLink>
-        </p>
-      </div>
-      <div
-        class="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3"
-      >
-        <article
-          v-for="post in posts"
-          :key="post.id"
-          class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pt-80 pb-8 sm:pt-48 lg:pt-80"
+        <div
+          class="mt-10 space-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16"
         >
-          <img
-            :src="post.imageUrl"
-            alt=""
-            class="absolute inset-0 -z-10 h-full w-full object-cover"
+          <article
+            v-for="post in posts"
+            :key="post.id"
+            class="flex max-w-xl flex-col items-start justify-between"
           >
-          <div
-            class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"
-          />
-          <div
-            class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-gray-900/10 ring-inset"
-          />
-
-          <div
-            class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300"
-          >
-            <time :datetime="post.datetime" class="mr-8">{{ post.date }}</time>
-            <div class="-ml-4 flex items-center gap-x-4">
-              <svg
-                viewBox="0 0 2 2"
-                class="-ml-0.5 h-0.5 w-0.5 flex-none fill-white/50"
+            <div class="flex items-center gap-x-4 text-xs">
+              <time :datetime="post.datetime" class="text-gray-500">{{
+                post.date
+              }}</time>
+              <a
+                :href="post.category.href"
+                class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+                >{{ post.category.title }}</a
               >
-                <circle cx="1" cy="1" r="1" />
-              </svg>
-              <div class="flex gap-x-2.5">
-                <img
-                  :src="post.author.imageUrl"
-                  alt=""
-                  class="h-6 w-6 flex-none rounded-full bg-white/10"
-                >
-                {{ post.author.name }}
+            </div>
+            <div class="group relative">
+              <h3
+                class="mt-3 text-lg leading-6 font-semibold text-gray-900 group-hover:text-gray-600"
+              >
+                <a :href="post.href">
+                  <span class="absolute inset-0" />
+                  {{ post.title }}
+                </a>
+              </h3>
+              <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                {{ post.description }}
+              </p>
+            </div>
+            <div class="relative mt-8 flex items-center gap-x-4">
+              <img
+                :src="post.author.imageUrl"
+                alt=""
+                class="h-10 w-10 rounded-full bg-gray-50"
+              >
+              <div class="text-sm leading-6">
+                <p class="font-semibold text-gray-900">
+                  <a :href="post.author.href">
+                    <span class="absolute inset-0" />
+                    {{ post.author.name }}
+                  </a>
+                </p>
+                <p class="text-gray-600">{{ post.author.role }}</p>
               </div>
             </div>
-          </div>
-          <h3 class="mt-3 text-lg leading-6 font-semibold text-white">
-            <a :href="post.href">
-              <span class="absolute inset-0" />
-              {{ post.title }}
-            </a>
-          </h3>
-        </article>
+          </article>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const posts = [
   {
     id: 1,
     title: "Boost your conversion rate",
     href: "#",
     description:
-      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel iusto corrupti dicta laboris incididunt.",
     date: "Mar 16, 2020",
     datetime: "2020-03-16",
+    category: { title: "Marketing", href: "#" },
     author: {
       name: "Michael Foster",
+      role: "Co-Founder / CTO",
+      href: "#",
       imageUrl:
         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
   },
   // More posts...
 ];
-
-definePageMeta({
-  layout: "dashboard",
-});
 </script>

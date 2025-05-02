@@ -49,7 +49,7 @@
                         <div class="relative h-40 sm:h-56">
                           <img
                             class="absolute h-full w-full object-cover"
-                            src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
+                            :src="user.image"
                             alt=""
                           >
                         </div>
@@ -62,7 +62,7 @@
                                 <h3
                                   class="text-xl font-bold text-gray-900 sm:text-2xl"
                                 >
-                                  Ashley Porter
+                                  {{ user.name }}
                                 </h3>
                                 <span
                                   class="ml-2.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-400"
@@ -70,14 +70,16 @@
                                   <span class="sr-only">Online</span>
                                 </span>
                               </div>
-                              <p class="text-sm text-gray-500">@ashleyporter</p>
+                              <p class="text-sm text-gray-500">
+                                @user-{{ user.id }}
+                              </p>
                             </div>
                             <div
                               class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3"
                             >
                               <button
                                 type="button"
-                                class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1"
+                                class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1"
                               >
                                 Message
                               </button>
@@ -125,7 +127,7 @@
                                                 : 'text-gray-700',
                                               'block px-4 py-2 text-sm',
                                             ]"
-                                            >View profile</a
+                                            >Edit profile</a
                                           >
                                         </MenuItem>
                                         <MenuItem v-slot="{ active }">
@@ -137,7 +139,7 @@
                                                 : 'text-gray-700',
                                               'block px-4 py-2 text-sm',
                                             ]"
-                                            >Copy profile link</a
+                                            >Delete profile</a
                                           >
                                         </MenuItem>
                                       </div>
@@ -160,10 +162,7 @@
                           </dt>
                           <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
                             <p>
-                              Enim feugiat ut ipsum, neque ut. Tristique mi id
-                              elementum praesent. Gravida in tempus feugiat
-                              netus enim aliquet a, quam scelerisque. Dictumst
-                              in convallis nec in bibendum aenean arcu.
+                              I'm {{ user.name }}, a consumer of this platform.
                             </p>
                           </dd>
                         </div>
@@ -171,30 +170,34 @@
                           <dt
                             class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
                           >
-                            Location
+                            Role
                           </dt>
                           <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                            New York, NY, USA
+                            {{ user.role }}
                           </dd>
                         </div>
                         <div>
                           <dt
                             class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
                           >
-                            Website
+                            Email
                           </dt>
                           <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                            ashleyporter.com
+                            {{ user.email }}
                           </dd>
                         </div>
                         <div>
                           <dt
                             class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0"
                           >
-                            Birthday
+                            Joined
                           </dt>
                           <dd class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                            <time datetime="1988-06-23">June 23, 1988</time>
+                            <time datetime="1988-06-23">
+                              {{
+                                new Date(user.createdAt).toLocaleDateString()
+                              }}
+                            </time>
                           </dd>
                         </div>
                       </dl>
@@ -227,6 +230,10 @@ import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
 defineProps({
   open: {
     type: Boolean,
+    required: true,
+  },
+  user: {
+    type: Object,
     required: true,
   },
 });
