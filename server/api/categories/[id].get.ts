@@ -5,11 +5,11 @@ export default defineEventHandler(async (event) => {
     const { id } = event.context.params as { id: string };
     if (!id) {
       setResponseStatus(event, 400);
-      return { error: "Bad Request" };
+      return { error: "Shop ID is required" };
     }
     const category = await prisma.category.findUnique({
       where: {
-        id,
+        id: id,
       },
       include: {
         products: true,

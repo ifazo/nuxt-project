@@ -29,8 +29,8 @@
               <div
                 class="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600"
               >
-                <component
-                  :is="feature.icon"
+                <Icon
+                  :icon="feature.icon"
                   class="size-6 text-white"
                   aria-hidden="true"
                 />
@@ -48,37 +48,28 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ArrowPathIcon,
-  CloudArrowUpIcon,
-  FingerPrintIcon,
-  LockClosedIcon,
-} from "@heroicons/vue/24/outline";
+import { Icon } from "@iconify/vue";
 
 const features = [
   {
-    name: "Push to deploy",
-    description:
-      "Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi.",
-    icon: CloudArrowUpIcon,
+    name: "Products and services",
+    description: "Buying and selling products and services.",
+    icon: "lucide:shopping-cart",
   },
   {
-    name: "SSL certificates",
-    description:
-      "Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget.",
-    icon: LockClosedIcon,
+    name: "Shops and categories",
+    description: "Creating and managing shops and categories.",
+    icon: "lucide:store",
   },
   {
-    name: "Simple queues",
-    description:
-      "Quisque est vel vulputate cursus. Risus proin diam nunc commodo.",
-    icon: ArrowPathIcon,
+    name: "Blog and articles",
+    description: "Creating and managing blog and articles.",
+    icon: "lucide:edit",
   },
   {
-    name: "Advanced security",
-    description:
-      "Arcu egestas dolor vel iaculis in ipsum mauris. Tincidunt mattis aliquet hac quis.",
-    icon: FingerPrintIcon,
+    name: "User and authentication",
+    description: "Creating and managing users and authentication.",
+    icon: "lucide:user-check",
   },
 ];
 </script>

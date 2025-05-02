@@ -5,11 +5,11 @@
       class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
     >
       <div class="flex items-center justify-between space-x-4">
-        <h2 class="text-lg font-medium text-gray-900">All Shop</h2>
+        <h2 class="text-lg font-medium text-gray-900">Shop List</h2>
         <div
           class="text-sm font-medium whitespace-nowrap text-indigo-600 hover:text-indigo-500"
         >
-          Total {{ shops.length }} Shops
+          {{ shops.length }} Shops
         </div>
       </div>
       <div

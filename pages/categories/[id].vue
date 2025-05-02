@@ -1,22 +1,21 @@
 <template>
   <div>
-    <div v-if="shop">
+    <div v-if="category">
       <div class="divide-y divide-gray-200">
         <div class="pb-6">
-          <div class="h-24 bg-indigo-700 sm:h-20 lg:h-28" />
           <div
-            class="-mt-12 flow-root px-4 sm:-mt-8 sm:flex sm:items-end sm:px-6 lg:-mt-16 lg:px-8"
+            class="mt-6 flow-root px-4 sm:mt-4 sm:flex sm:items-end sm:px-6 lg:mt-8 lg:px-8"
           >
             <div>
               <div class="-m-1 flex">
                 <div
                   class="inline-flex overflow-hidden rounded-lg border-4 border-white"
                 >
-                  <img
-                    class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48"
-                    :src="shop.logo"
-                    alt=""
-                  >
+                  <Icon
+                    :icon="`lucide:${category.icon}`"
+                    class="h-12 w-12 text-gray-600 sm:h-20 sm:w-20 lg:h-24 lg:w-24"
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             </div>
@@ -24,16 +23,11 @@
               <div>
                 <div class="flex items-center">
                   <h3 class="text-xl font-bold text-gray-900 sm:text-2xl">
-                    {{ shop.name }}
+                    {{ category.name }}
                   </h3>
-                  <Icon
-                    icon="lucide:check-circle"
-                    class="ml-2.5 h-5 w-5 text-blue-700"
-                    aria-hidden="true"
-                  />
                 </div>
                 <p class="text-sm text-gray-500">
-                  {{ shop.products.length }} products
+                  {{ category.products.length }} products
                 </p>
               </div>
               <div
@@ -84,7 +78,7 @@
                                   : 'text-gray-700',
                                 'block px-4 py-2 text-sm',
                               ]"
-                              >Share shop</a
+                              >Share category</a
                             >
                           </MenuItem>
                           <MenuItem v-slot="{ active }">
@@ -96,7 +90,7 @@
                                   : 'text-gray-700',
                                 'block px-4 py-2 text-sm',
                               ]"
-                              >Copy shop link</a
+                              >Copy category link</a
                             >
                           </MenuItem>
                         </div>
@@ -113,7 +107,7 @@
             class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8"
           >
             <NuxtLink
-              v-for="product in shop?.products"
+              v-for="product in category?.products"
               :key="product.id"
               :to="`/products/${product.id}`"
               class="group"
@@ -142,26 +136,28 @@
 import { Icon } from "@iconify/vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
-import type { Product, Shop } from "@prisma/client";
+import type { Product, Category } from "@prisma/client";
 import { useRoute } from "vue-router";
 
-type ShopProduct = Shop & {
+type CategoryProduct = Category & {
   products: Product[];
 };
 
 const route = useRoute();
 
-const shop = ref<ShopProduct | null>(null);
+const category = ref<CategoryProduct | null>(null);
 
 onMounted(async () => {
-  const shopId = Array.isArray(route.params.id)
+  const categoryId = Array.isArray(route.params.id)
     ? route.params.id[0]
     : route.params.id;
   try {
-    const shopData = await $fetch<ShopProduct>(`/api/shops/${shopId}`);
-    shop.value = shopData;
+    const categoryData = await $fetch<CategoryProduct>(
+      `/api/categories/${categoryId}`,
+    );
+    category.value = categoryData;
   } catch (error) {
-    console.error("Error fetching shops:", error);
+    console.error("Error fetching category:", error);
   }
 });
 </script>

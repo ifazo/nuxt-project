@@ -25,13 +25,15 @@
                 <h3 class="text-xl font-bold text-gray-900 sm:text-2xl">
                   {{ shop.name }}
                 </h3>
-                <span
-                  class="ml-2.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-400"
-                >
-                  <span class="sr-only">Online</span>
-                </span>
+                <Icon
+                  icon="lucide:check-circle"
+                  class="ml-2.5 h-5 w-5 text-blue-700"
+                  aria-hidden="true"
+                />
               </div>
-              <p class="text-sm text-gray-500">@shop-{{ shop.id }}</p>
+              <p class="text-sm text-gray-500">
+                {{ shop.products.length }} products
+              </p>
             </div>
             <div
               class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3"
@@ -200,20 +202,24 @@
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { PlusIcon, EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
-import type { Shop } from "@prisma/client";
+import type { Product, Shop } from "@prisma/client";
 import ShopFormModal from "~/components/ShopFormModal.vue";
+
+type ShopProduct = Shop & {
+  products: Product[];
+};
 
 const open = ref(false);
 
 const userStore = useUserStore();
 const user = computed(() => userStore.user);
-const shop = ref<Shop | null>(null);
+const shop = ref<ShopProduct | null>(null);
 
 onMounted(async () => {
   userStore.initializeUser();
   try {
     if (user.value) {
-      const data = await $fetch<Shop>(
+      const data = await $fetch<ShopProduct>(
         `/api/shops?userEmail=${user.value.email}`,
       );
       shop.value = data;

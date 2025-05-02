@@ -29,7 +29,7 @@
               <img
                 :src="image"
                 alt=""
-                class="h-full w-full object-cover object-center sm:rounded-lg"
+                class="h-96 w-full object-cover object-center sm:rounded-lg"
               >
             </TabPanel>
           </TabPanels>

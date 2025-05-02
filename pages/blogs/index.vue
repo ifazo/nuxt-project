@@ -26,12 +26,8 @@
           </div>
           <div class="max-w-xl">
             <div class="mt-8 flex items-center gap-x-4 text-xs">
-              <time
-                v-if="blog.createdAt"
-                :datetime="new Date(blog.createdAt).toISOString()"
-                class="font-medium text-gray-500"
-              >
-                {{ formatDate(blog.createdAt) }}
+              <time v-if="blog.createdAt" datetime="2020-01-07">
+                {{ new Date(blog.createdAt).toLocaleDateString() }}
               </time>
               <div class="flex flex-wrap gap-2">
                 <div
@@ -101,15 +97,6 @@ type Blogs = Blog & {
 };
 
 const blogs = ref<Blogs[]>([]);
-
-const formatDate = (date: string | Date) => {
-  const options: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  };
-  return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
-};
 
 onMounted(async () => {
   try {

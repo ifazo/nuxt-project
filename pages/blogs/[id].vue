@@ -10,6 +10,27 @@
           >
             {{ blog.title }}
           </h2>
+          <div class="relative mt-8 flex items-center gap-x-4">
+            <img
+              :src="blog.user.image"
+              alt=""
+              class="size-10 rounded-full bg-gray-50"
+            >
+            <div class="text-sm/6">
+              <p class="font-semibold text-gray-900">
+                <!-- <a :href="post.author.href"> -->
+                <span class="absolute inset-0" />
+                {{ blog.user.name }}
+                <!-- </a> -->
+              </p>
+              <p v-if="blog.createdAt" class="text-gray-600">
+                Published:
+                <time datetime="2020-01-07">
+                  {{ new Date(blog.createdAt).toLocaleDateString() }}
+                </time>
+              </p>
+            </div>
+          </div>
           <p class="mt-6 text-xl leading-8 text-gray-600">
             {{ blog.description }}
           </p>
@@ -99,10 +120,6 @@
           </div>
         </div>
       </div>
-      <!-- <div
-        class="mt-8 text-base leading-7 text-gray-600"
-        v-html="blog.content"
-      /> -->
     </div>
     <div v-else class="flex h-screen items-center justify-center bg-white">
       Loading...
@@ -118,13 +135,17 @@ import BlogReview from "~/components/BlogReview.vue";
 import BlogReviews from "~/components/BlogReviews.vue";
 
 type IBlog = {
-  blog: Blog;
+  blog: Blog & {
+    user: {
+      name: string;
+      image: string;
+    };
+  };
   products: Product[];
 };
-
 const route = useRoute();
 
-const blog = ref<Blog | null>(null);
+const blog = ref<IBlog["blog"] | null>(null);
 const products = ref<Product[]>([]);
 
 const reviewLengths = ref(0);
