@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import Stripe from "stripe";
 import prisma from "~/prisma";
 import type { CartItem } from "~/stores/cart";
@@ -41,7 +40,7 @@ export default defineEventHandler(async (event) => {
         },
         unit_amount: Math.round(product.price * 100),
       },
-      quantity: product.quantity || 1,
+      quantity: product.quantity,
     }));
 
     const stripeSession = await stripe.checkout.sessions.create({
@@ -53,19 +52,20 @@ export default defineEventHandler(async (event) => {
       cancel_url: `${getRequestURL(event).origin}/cancel`,
     });
 
-    const total = products.reduce(
-      (acc: number, product: { price: number; quantity: number }) =>
-        acc + product.price * (product.quantity || 1),
-      0,
-    );
-
     await prisma.order.create({
       data: {
         userEmail: email,
         sessionId: stripeSession.id,
         customerId: customer.id,
-        products: products as Prisma.InputJsonValue[],
-        total,
+        products: products.map((product) => ({
+          productId: product.id,
+          quantity: product.quantity,
+        })),
+        total: products.reduce(
+          (acc: number, product: { price: number; quantity: number }) =>
+            acc + product.price * (product.quantity || 1),
+          0,
+        ),
       },
     });
 

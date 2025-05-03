@@ -306,7 +306,7 @@ const buyerNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   {
     name: "Wishlist",
-    href: "/dashboard/wishlists",
+    href: "/dashboard/wishlist",
     icon: UsersIcon,
     current: false,
   },

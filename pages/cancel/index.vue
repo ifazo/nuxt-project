@@ -1,28 +1,26 @@
 <template>
   <!--
-      This example requires updating your template:
-  
-      ```
-      <html class="h-full">
-      <body class="h-full">
-      ```
-    -->
+        This example requires updating your template:
+    
+        ```
+        <html class="h-full">
+        <body class="h-full">
+        ```
+      -->
   <main
     class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8"
   >
     <div class="text-center">
-      <p class="text-4xl font-semibold text-indigo-600">
-        {{ error.statusCode }}
-      </p>
+      <p class="text-4xl font-semibold text-indigo-600">404</p>
       <h1
         class="mt-4 text-2xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl"
       >
-        {{ error.statusMessage }}
+        Cancel
       </h1>
       <p
         class="mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8"
       >
-        Sorry, we encountered an error while processing your request.
+        Payment was cancelled. Please try again.
       </p>
       <div class="mt-10 flex items-center justify-center gap-x-6">
         <NuxtLink
@@ -37,12 +35,3 @@
     </div>
   </main>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  error: {
-    type: Object,
-    required: true,
-  },
-});
-</script>

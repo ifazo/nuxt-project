@@ -25,11 +25,17 @@ export default defineEventHandler(async (event) => {
           productId: productId,
           userEmail: user.email,
         },
+        include: {
+          product: true,
+        },
       });
     } else {
       wishlist = await prisma.wishlist.findMany({
         where: {
           userEmail: user.email,
+        },
+        include: {
+          product: true,
         },
       });
     }

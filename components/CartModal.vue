@@ -42,9 +42,13 @@
                   <h3
                     class="flex items-center justify-between font-medium text-gray-900"
                   >
-                    <NuxtLink :to="product.id" class="truncate">{{
-                      product.title
-                    }}</NuxtLink>
+                    <NuxtLink :to="product.id" class="truncate">
+                      {{
+                        product.title.length > 20
+                          ? product.title.slice(0, 20) + "..."
+                          : product.title
+                      }}
+                    </NuxtLink>
                     <button
                       type="button"
                       class="ml-4 rounded bg-red-50 px-2 py-1 shadow-sm hover:bg-red-100"
@@ -76,13 +80,13 @@
               Checkout ${{ totalPrice.toFixed(2) }}
             </button>
 
-            <p class="mt-6 text-center">
+            <!-- <p class="mt-6 text-center">
               <a
                 href="#"
                 class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >View Shopping Bag</a
               >
-            </p>
+            </p> -->
           </form>
 
           <div
