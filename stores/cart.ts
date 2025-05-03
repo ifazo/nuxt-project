@@ -9,19 +9,17 @@ export type CartItem = Product & {
 export const useCartStore = defineStore("cart", () => {
   const cart = ref<CartItem[]>([]);
 
-  const total = computed(() =>
+  const totalPrice = computed(() =>
     cart.value.reduce((acc, item) => acc + item.price * item.quantity, 0),
   );
 
-  function addToCart(item: Product) {
+  function addToCart(item: Product, quantity: number) {
     const existingItem = cart.value.find((i) => i.id === item.id);
-
     if (existingItem) {
-      existingItem.quantity += 1;
+      existingItem.quantity += quantity;
     } else {
-      cart.value.push({ ...item, quantity: 1 });
+      cart.value.push({ ...item, quantity: quantity });
     }
-
     localStorage.setItem("cart", JSON.stringify(cart.value));
   }
 
@@ -40,5 +38,12 @@ export const useCartStore = defineStore("cart", () => {
     cart.value = storedCart ? JSON.parse(storedCart) : [];
   }
 
-  return { cart, total, addToCart, removeFromCart, clearCart, initializeCart };
+  return {
+    cart,
+    totalPrice,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    initializeCart,
+  };
 });

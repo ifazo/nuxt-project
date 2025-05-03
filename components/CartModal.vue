@@ -58,7 +58,7 @@
                   </h3>
                   <div class="mt-1 flex">
                     <p class="font-medium text-gray-500">
-                      ${{ product.price }}
+                      $ {{ (product.price * product.quantity).toFixed(2) }}
                     </p>
                     <p class="ml-auto font-medium text-gray-500">
                       Qty: {{ product.quantity }}
@@ -73,7 +73,7 @@
               class="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
               @click.prevent="handlePayment(products, user)"
             >
-              Checkout
+              Checkout ${{ totalPrice.toFixed(2) }}
             </button>
 
             <p class="mt-6 text-center">
@@ -121,6 +121,7 @@ const toast = useToast();
 
 const cartStore = useCartStore();
 const products = computed(() => cartStore.cart);
+const totalPrice = computed(() => cartStore.totalPrice);
 
 onMounted(() => {
   cartStore.initializeCart();

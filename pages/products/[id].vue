@@ -114,20 +114,70 @@
 
           <p class="mt-6 text-gray-500">{{ product.description }}</p>
 
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+          <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+            <div
+              class="flex items-center justify-between rounded-full border border-gray-300 px-3 py-2"
+            >
+              <button
+                type="button"
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-600 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+                @click="quantity > 1 ? quantity-- : null"
+              >
+                <span class="sr-only">Decrease quantity</span>
+                <MinusIcon class="h-5 w-5" aria-hidden="true" />
+              </button>
+              <input
+                v-model="quantity"
+                type="number"
+                min="1"
+                class="w-12 border-0 text-center text-base font-medium focus:ring-0 focus:outline-none"
+              >
+              <button
+                type="button"
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-600 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+                @click="quantity++"
+              >
+                <span class="sr-only">Increase quantity</span>
+                <PlusIcon class="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+            <button
+              type="button"
+              class="flex w-full items-center justify-center gap-x-2 rounded-full border border-transparent bg-red-50 px-8 py-3 text-base font-medium text-red-700 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
+              @click="toggleWishlistHandler(product)"
+            >
+              <HeartIcon
+                :class="[
+                  wishlist?.productId === product.id
+                    ? 'fill-red-500 text-red-500'
+                    : 'text-red-700',
+                ]"
+                class="h-5 w-5"
+                aria-hidden="true"
+              />
+              {{
+                wishlist?.productId === product.id
+                  ? "Remove Product"
+                  : "Add to Wishlist"
+              }}
+            </button>
+          </div>
+
+          <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
             <button
               type="button"
               class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
               @click.prevent="handlePayment({ ...product, quantity: quantity })"
             >
-              Buy ${{ product.price }}
+              Buy ${{ (product.price * quantity).toFixed(2) }}
             </button>
             <button
               type="button"
-              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
-              @click="addToCartHandler(product)"
+              class="flex w-full items-center justify-center gap-x-2 rounded-md border border-transparent bg-indigo-50 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
+              @click="addToCartHandler(product, quantity)"
             >
-              Add to cart
+              <ShoppingCartIcon class="h-5 w-5" aria-hidden="true" />
+              Add to Cart
             </button>
           </div>
 
@@ -244,7 +294,7 @@
 
 <script setup lang="ts">
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-import { StarIcon } from "@heroicons/vue/20/solid";
+import { MinusIcon, PlusIcon, StarIcon } from "@heroicons/vue/20/solid";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb.vue";
 import { useCartStore } from "@/stores/cart";
 import { useUserStore } from "@/stores/user";
@@ -252,8 +302,9 @@ import { loadStripe } from "@stripe/stripe-js";
 import ProductReview from "~/components/ProductReview.vue";
 import { useRoute } from "vue-router";
 import type { CartItem } from "~/stores/cart";
-import type { Product } from "@prisma/client";
+import type { Product, Wishlist } from "@prisma/client";
 import ProductReviews from "~/components/ProductReviews.vue";
+import { HeartIcon, ShoppingCartIcon } from "@heroicons/vue/24/outline";
 
 const route = useRoute();
 
@@ -264,6 +315,8 @@ const stripePromise = loadStripe(
 
 const quantity = ref(1);
 const product = ref<Product | null>(null);
+
+const wishlist = ref<Wishlist | null>(null);
 
 const reviewLengths = ref(0);
 const averageRatings = ref(0.0);
@@ -298,10 +351,83 @@ onMounted(async () => {
     } else {
       console.error("No product found");
     }
+
+    if (user.value) {
+      const wishlistData = await $fetch<Wishlist>(
+        "/api/wishlist?productId=" + productId,
+        {
+          method: "GET",
+          headers: {
+            "user-email": user.value.email,
+          },
+        },
+      );
+      wishlist.value = wishlistData;
+    }
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error fetching product or wishlist:", error);
   }
 });
+
+const toggleWishlistHandler = async (product: Product) => {
+  if (!user.value) {
+    toast.add({
+      title: "Authentication Required",
+      description: "Please sign in to manage product wishlist.",
+      color: "warning",
+    });
+    return navigateTo("/sign-in");
+  }
+
+  const isInWishlist = wishlist.value?.productId === product.id;
+
+  if (isInWishlist) {
+    if (wishlist.value && wishlist.value.id) {
+      await $fetch(`/api/wishlist/${wishlist.value.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "user-email": user.value.email,
+        },
+        body: {
+          productId: product.id,
+        },
+      });
+    }
+    toast.add({
+      title: "Success",
+      description: "Product removed from wishlist",
+      color: "success",
+    });
+    window.location.reload();
+  } else {
+    await $fetch("/api/wishlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "user-email": user.value.email,
+      },
+      body: {
+        productId: product.id,
+      },
+    });
+    toast.add({
+      title: "Success",
+      description: "Product added to wishlist",
+      color: "success",
+    });
+    window.location.reload();
+  }
+};
+
+const addToCartHandler = (product: Product, quantity: number) => {
+  cartStore.addToCart(product, quantity);
+  toast.add({
+    title: "Success",
+    description: "Product added to cart",
+    color: "success",
+  });
+};
 
 const handlePayment = async (product: CartItem) => {
   if (!user.value) {
@@ -351,14 +477,5 @@ const handlePayment = async (product: CartItem) => {
       color: "error",
     });
   }
-};
-
-const addToCartHandler = (product: Product) => {
-  cartStore.addToCart(product);
-  toast.add({
-    title: "Success",
-    description: "Product added to cart",
-    color: "success",
-  });
 };
 </script>
