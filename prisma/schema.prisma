@@ -20,8 +20,8 @@ model User {
   email          String          @unique
   password       String?
   role           UserRole        @default(BUYER)
-  createdAt      DateTime?       @default(now())
-  updatedAt      DateTime?       @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   orders         Order[]
   wishlists      Wishlist[]
   blogs          Blog[]
@@ -37,8 +37,8 @@ model Category {
   name      String    @unique
   details   String
   icon      String
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   products  Product[]
 
   @@map("categories")
@@ -51,8 +51,8 @@ model Shop {
   logo      String
   userEmail String    @unique @map("user")
   user      User      @relation(fields: [userEmail], references: [email])
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   products  Product[]
 
   @@map("shops")
@@ -71,8 +71,8 @@ model Product {
   category       Category        @relation(fields: [categoryName], references: [name], onDelete: Cascade)
   shopName       String          @map("shop")
   shop           Shop            @relation(fields: [shopName], references: [name], onDelete: Cascade)
-  createdAt      DateTime?       @default(now())
-  updatedAt      DateTime?       @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   wishlists      Wishlist[]
   productReviews ProductReview[]
 
@@ -80,15 +80,15 @@ model Product {
 }
 
 model ProductReview {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   rating    Int
   comment   String
-  userEmail String    @map("user")
-  user      User      @relation(fields: [userEmail], references: [email])
-  productId String    @map("product")
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  userEmail String   @map("user")
+  user      User     @relation(fields: [userEmail], references: [email])
+  productId String   @map("product")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("product_reviews")
 }
@@ -102,35 +102,35 @@ model Blog {
   tags        String[]
   userEmail   String       @map("user")
   user        User         @relation(fields: [userEmail], references: [email])
-  createdAt   DateTime?    @default(now())
-  updatedAt   DateTime?    @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   blogReviews BlogReview[]
 
   @@map("blogs")
 }
 
 model BlogReview {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   rating    Int
   comment   String
-  userEmail String    @map("user")
-  user      User      @relation(fields: [userEmail], references: [email])
-  blogId    String    @map("blog")
-  blog      Blog      @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  userEmail String   @map("user")
+  user      User     @relation(fields: [userEmail], references: [email])
+  blogId    String   @map("blog")
+  blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("blog_reviews")
 }
 
 model Wishlist {
-  id        String    @id @default(uuid())
-  userEmail String    @map("user")
-  user      User      @relation(fields: [userEmail], references: [email])
-  productId String    @map("product")
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  id        String   @id @default(uuid())
+  userEmail String   @map("user")
+  user      User     @relation(fields: [userEmail], references: [email])
+  productId String   @map("product")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("wishlists")
 }
@@ -144,8 +144,8 @@ model Order {
   customerId String      @map("customer_id")
   userEmail  String      @map("user")
   user       User        @relation(fields: [userEmail], references: [email])
-  createdAt  DateTime?   @default(now())
-  updatedAt  DateTime?   @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@map("orders")
 }

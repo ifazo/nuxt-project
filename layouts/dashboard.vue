@@ -96,14 +96,7 @@
               </nav>
             </div>
             <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <button
-                type="button"
-                class="group block flex-shrink-0"
-                @click="
-                  open = true;
-                  sidebarOpen = false;
-                "
-              >
+              <NuxtLink to="/dashboard" class="group block flex-shrink-0">
                 <div class="flex items-center">
                   <div v-if="user.image">
                     <img
@@ -130,8 +123,7 @@
                     </p>
                   </div>
                 </div>
-              </button>
-              <!-- <ProfileModal v-model:open="open" /> -->
+              </NuxtLink>
               <button
                 type="button"
                 class="ml-auto flex h-10 w-10 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
@@ -193,7 +185,7 @@
           </nav>
         </div>
         <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
-          <button class="group block w-full flex-shrink-0" @click="open = true">
+          <NuxtLink to="/dashboard" class="group block w-full flex-shrink-0">
             <div class="flex items-center">
               <div v-if="user.image">
                 <img
@@ -218,8 +210,7 @@
                 </p>
               </div>
             </div>
-          </button>
-          <ProfileModal v-model:open="open" :user="user" />
+          </NuxtLink>
           <button
             type="button"
             class="ml-auto flex h-8 w-8 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
@@ -286,11 +277,9 @@ import {
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/vue/24/outline";
 import { signOut } from "~/lib/firebase";
-import ProfileModal from "~/components/ProfileModal.vue";
 import { useRoute } from "vue-router";
 
 const sidebarOpen = ref(false);
-const open = ref(false);
 
 const route = useRoute();
 const toast = useToast();

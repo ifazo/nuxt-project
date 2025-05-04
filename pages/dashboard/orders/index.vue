@@ -13,7 +13,7 @@
         </p>
       </div>
 
-      <div v-if="orders" class="mt-6 space-y-8">
+      <div v-if="orders?.length" class="mt-6 space-y-8">
         <section
           v-for="order in orders"
           :key="order.id"
@@ -109,6 +109,9 @@
           </div>
         </section>
       </div>
+      <div v-else-if="orders.length === 0" class="mt-6">
+        <p class="text-sm text-gray-500">No orders found.</p>
+      </div>
       <div v-else class="mt-6">
         <p class="text-sm text-gray-500">No orders found.</p>
       </div>
@@ -120,12 +123,12 @@
 import type { Order, Product } from "@prisma/client";
 
 type OrderProduct = Order & {
-  products: Product[];
+  products: (Product & { quantity: number })[];
 };
 
 const userStore = useUserStore();
 const user = computed(() => userStore.user);
-const orders = ref<OrderProduct[] | null>([]);
+const orders = ref<OrderProduct[]>([]);
 
 onMounted(async () => {
   if (!user.value) {

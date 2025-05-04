@@ -44,10 +44,13 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <div v-else-if="products?.length === 0">
       <p class="py-8 text-start text-gray-500 sm:py-12">
         No products in your wishlist.
       </p>
+    </div>
+    <div v-else>
+      <p class="py-8 text-start text-gray-500 sm:py-12">Loading...</p>
     </div>
   </div>
 </template>
