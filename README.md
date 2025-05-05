@@ -30,14 +30,17 @@ This project leverages the following technologies:
 ## Role Base User Login Credentials
 
 ### Buyer
+
 - **Email**: buyer@mail.com
 - **Password**: 123456
 
 ### Seller
+
 - **Email**: seller@mail.com
 - **Password**: 123456
 
 ### Admin
+
 - **Email**: admin@mail.com
 - **Password**: 123456
 
