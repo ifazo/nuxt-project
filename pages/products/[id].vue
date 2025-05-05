@@ -24,12 +24,14 @@
         <!-- Product image -->
         <TabGroup as="div" class="lg:col-span-4 lg:row-end-1">
           <!-- Image selector -->
-          <TabPanels class="aspect-h-1 aspect-w-1 w-full">
+          <TabPanels
+            class="aspect-h-1 aspect-w-1 flex w-full items-center justify-center"
+          >
             <TabPanel v-for="(image, index) in product.images" :key="index">
               <img
                 :src="image"
                 alt=""
-                class="h-96 w-full object-cover object-center sm:rounded-lg"
+                class="h-150 w-150 object-cover object-center sm:rounded-lg"
               >
             </TabPanel>
           </TabPanels>

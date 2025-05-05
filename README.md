@@ -1,75 +1,46 @@
-# Nuxt Minimal Starter
+# Nuxt E-Commerce Platform
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a modern e-commerce platform built with Nuxt 3, providing a seamless shopping experience for buyers and sellers. The platform includes features like product management, cart functionality, wishlist, and admin controls.
 
-## Setup
+## Live Demo
 
-Make sure to install dependencies:
+Check out the live application: [ifaz-nuxt.vercel.app](https://ifaz-nuxt.vercel.app)
 
-```bash
-# npm
-npm install
+## GitHub Repository
 
-# pnpm
-pnpm install
+Explore the source code: [GitHub Repository](https://github.com/ifazo/nuxt-project)
 
-# yarn
-yarn install
+## Overview
 
-# bun
-bun install
-```
+This project leverages the following technologies:
 
-## Development Server
+- **Nuxt 3**: A modern Vue.js framework for building server-side rendered and static web applications.
+- **Pinia**: State management for managing cart, wishlist, and user data.
+- **Prisma**: ORM for database management and migrations.
+- **Stripe**: Payment gateway integration for secure transactions.
+- **Tailwind CSS**: Utility-first CSS framework for responsive and modern UI design.
+- **Firebase**: For authentication and real-time database features.
 
-Start the development server on `http://localhost:3000`:
+## Features
 
-```bash
-# npm
-npm run dev
+- **Buyer**: Browse products, add to cart, manage wishlist, and checkout.
+- **Seller**: Manage products, view orders, and track sales.
+- **Admin**: Manage users, products, and orders.
 
-# pnpm
-pnpm dev
+## Role Base User Login Credentials
 
-# yarn
-yarn dev
+### Buyer
+- **Email**: buyer@mail.com
+- **Password**: 123456
 
-# bun
-bun run dev
-```
+### Seller
+- **Email**: seller@mail.com
+- **Password**: 123456
 
-## Production
+### Admin
+- **Email**: admin@mail.com
+- **Password**: 123456
 
-Build the application for production:
+## License
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+This project is maintaining under @ifazo.

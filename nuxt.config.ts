@@ -29,7 +29,9 @@ export default defineNuxtConfig({
     dir: "assets/images",
     domains: [
       "https://tailwindui.com",
+      "https://m.media-amazon.com",
       "https://i.ibb.co.com",
+      "https://images.unsplash.com",
       "https://lh3.googleusercontent.com",
     ],
   },

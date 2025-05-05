@@ -38,6 +38,26 @@ export const useCartStore = defineStore("cart", () => {
     cart.value = storedCart ? JSON.parse(storedCart) : [];
   }
 
+  function increaseQuantity(id: string) {
+    const existingItem = cart.value.find((item) => item.id === id);
+    if (existingItem) {
+      existingItem.quantity += 1;
+      localStorage.setItem("cart", JSON.stringify(cart.value));
+    }
+  }
+
+  function decreaseQuantity(id: string) {
+    const existingItem = cart.value.find((item) => item.id === id);
+    if (existingItem) {
+      if (existingItem.quantity > 1) {
+        existingItem.quantity -= 1;
+      } else {
+        removeFromCart(id);
+      }
+      localStorage.setItem("cart", JSON.stringify(cart.value));
+    }
+  }
+
   return {
     cart,
     totalPrice,
@@ -45,5 +65,7 @@ export const useCartStore = defineStore("cart", () => {
     removeFromCart,
     clearCart,
     initializeCart,
+    increaseQuantity,
+    decreaseQuantity,
   };
 });

@@ -265,14 +265,16 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 import {
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
+  ShoppingBagIcon,
+  BuildingStorefrontIcon,
   HomeIcon,
-  InboxIcon,
+  PencilSquareIcon,
   Bars2Icon,
-  UsersIcon,
+  Square2StackIcon,
+  ShoppingCartIcon,
+  HeartIcon,
   UserCircleIcon,
+  GiftIcon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/vue/24/outline";
@@ -294,15 +296,21 @@ onMounted(() => {
 const buyerNavigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   {
+    name: "Cart",
+    href: "/dashboard/cart",
+    icon: ShoppingCartIcon,
+    current: false,
+  },
+  {
     name: "Wishlist",
     href: "/dashboard/wishlist",
-    icon: UsersIcon,
+    icon: HeartIcon,
     current: false,
   },
   {
     name: "Orders",
     href: "/dashboard/orders",
-    icon: ChartBarIcon,
+    icon: ShoppingBagIcon,
     current: false,
   },
 ];
@@ -312,10 +320,15 @@ const sellerNavigation = [
   {
     name: "Products",
     href: "/dashboard/products",
-    icon: FolderIcon,
+    icon: GiftIcon,
     current: false,
   },
-  { name: "Shops", href: "/dashboard/shops", icon: InboxIcon, current: false },
+  {
+    name: "Shops",
+    href: "/dashboard/shops",
+    icon: BuildingStorefrontIcon,
+    current: false,
+  },
 ];
 
 const adminNavigation = [
@@ -323,13 +336,13 @@ const adminNavigation = [
   {
     name: "Blogs",
     href: "/dashboard/blogs",
-    icon: UsersIcon,
+    icon: PencilSquareIcon,
     current: false,
   },
   {
     name: "Categories",
     href: "/dashboard/categories",
-    icon: CalendarIcon,
+    icon: Square2StackIcon,
     current: false,
   },
 ];

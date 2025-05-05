@@ -26,9 +26,6 @@
           </div>
           <div class="max-w-xl">
             <div class="mt-8 flex items-center gap-x-4 text-xs">
-              <time v-if="blog.createdAt" datetime="2020-01-07">
-                {{ new Date(blog.createdAt).toLocaleDateString() }}
-              </time>
               <div class="flex flex-wrap gap-2">
                 <div
                   v-for="(tag, index) in blog.tags"
@@ -75,7 +72,11 @@
                   <span class="absolute inset-0" />
                   {{ blog.user.name }}
                 </div>
-                <p class="font-medium text-gray-600">Writer</p>
+                <p class="font-medium text-gray-600">
+                  <time v-if="blog.createdAt" datetime="2020-01-07">
+                    {{ new Date(blog.createdAt).toLocaleDateString() }}
+                  </time>
+                </p>
               </div>
             </div>
           </div>
