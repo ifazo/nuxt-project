@@ -144,6 +144,7 @@ onMounted(async () => {
 });
 
 definePageMeta({
+  middleware: ["auth"],
   layout: "dashboard",
 });
 </script>

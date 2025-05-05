@@ -277,6 +277,7 @@ const handleSubmit = async () => {
 };
 
 definePageMeta({
+  middleware: ["auth"],
   layout: "dashboard",
 });
 </script>

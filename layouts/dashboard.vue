@@ -388,8 +388,4 @@ const handleSignOut = () => {
       });
     });
 };
-
-definePageMeta({
-  middleware: "auth",
-});
 </script>

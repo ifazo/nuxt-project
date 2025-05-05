@@ -97,10 +97,6 @@ import CategoryFormModal from "~/components/CategoryFormModal.vue";
 
 const open = ref(false);
 
-definePageMeta({
-  layout: "dashboard",
-});
-
 type ECategory = Category & {
   _count: {
     products: number;
@@ -120,5 +116,10 @@ onMounted(async () => {
   } catch (error) {
     console.error("Error fetching categories:", error);
   }
+});
+
+definePageMeta({
+  middleware: ["auth"],
+  layout: "dashboard",
 });
 </script>

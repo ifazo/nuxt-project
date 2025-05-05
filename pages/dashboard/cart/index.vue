@@ -234,6 +234,7 @@ const handlePayment = async (products: CartItem[], user: User) => {
 };
 
 definePageMeta({
+  middleware: ["auth"],
   layout: "dashboard",
 });
 </script>

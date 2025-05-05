@@ -22,7 +22,6 @@
           :key="category.id"
           :to="`/categories/${category.id}`"
           class="group flex flex-col rounded-xl border border-gray-200 bg-white shadow-2xs transition hover:shadow-md focus:shadow-md focus:outline-hidden dark:border-neutral-800 dark:bg-neutral-900"
-          href="#"
         >
           <div class="p-4 md:p-5">
             <div class="flex gap-x-5">
